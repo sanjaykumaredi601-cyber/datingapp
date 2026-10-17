@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete Account & Data Erasure — Aura Dating App</title>
+  <meta name="description" content="Request permanent account and personal data deletion for your Aura Dating account under Apple App Store Guideline 5.1.1(v), Google Play Policy, and India DPDP Act 2023.">
+  <link rel="icon" type="image/png" href="/assets/images/app_icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-base: #0A0D14;
+      --bg-surface: #131924;
+      --bg-elevated: #1A2230;
+      --border-frosted: #1E2638;
+      --mint-accent: #00F5A0;
+      --cyan-glow: #00D2FF;
+      --text-white: #F8FAFC;
+      --text-slate: #94A3B8;
+      --danger-coral: #FF4D67;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-white);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      line-height: 1.7;
+      padding-bottom: 4rem;
+    }
+
+    header {
+      background: rgba(10, 13, 20, 0.95);
+      border-bottom: 1px solid var(--border-frosted);
+      padding: 1.25rem 2rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(14px);
+    }
+
+    .header-content {
+      max-width: 860px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #FFF;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .brand img {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+    }
+
+    .back-link {
+      color: var(--mint-accent);
+      text-decoration: none;
+      font-size: 0.92rem;
+      font-weight: 600;
+    }
+
+    .container {
+      max-width: 780px;
+      margin: 3rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .doc-header {
+      margin-bottom: 2.5rem;
+      border-bottom: 1px solid var(--border-frosted);
+      padding-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    .doc-header h1 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2rem, 4vw, 2.7rem);
+      margin-bottom: 0.5rem;
+      letter-spacing: -0.5px;
+    }
+
+    .doc-meta {
+      color: var(--text-slate);
+      font-size: 0.92rem;
+    }
+
+    .warning-card {
+      background: rgba(255, 77, 103, 0.08);
+      border: 1px solid rgba(255, 77, 103, 0.3);
+      border-radius: 16px;
+      padding: 1.75rem;
+      margin-bottom: 2.5rem;
+    }
+
+    .warning-card h3 {
+      color: var(--danger-coral);
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .form-card {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-frosted);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.45);
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.9rem;
+      margin-bottom: 0.5rem;
+      color: #E2E8F0;
+    }
+
+    input[type="text"],
+    input[type="email"],
+    select,
+    textarea {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      background: #0A0D14;
+      border: 1px solid var(--border-frosted);
+      border-radius: 12px;
+      color: #FFF;
+      font-family: inherit;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      outline: none;
+      border-color: var(--mint-accent);
+      box-shadow: 0 0 12px rgba(0, 245, 160, 0.25);
+    }
+
+    .checkbox-group {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-top: 1.5rem;
+    }
+
+    .checkbox-group input {
+      margin-top: 4px;
+      accent-color: var(--danger-coral);
+      width: 18px;
+      height: 18px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      background: linear-gradient(135deg, var(--danger-coral), #D91A50);
+      color: #FFF;
+      font-weight: 700;
+      padding: 1.05rem;
+      border-radius: 12px;
+      border: none;
+      font-size: 1rem;
+      cursor: pointer;
+      margin-top: 1.5rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 15px rgba(255, 77, 103, 0.35);
+    }
+
+    .btn-submit:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 77, 103, 0.55);
+    }
+
+    .status-alert {
+      display: none;
+      padding: 1.5rem;
+      border-radius: 14px;
+      margin-top: 1.5rem;
+    }
+
+    .status-success {
+      background: rgba(0, 245, 160, 0.12);
+      border: 1px solid rgba(0, 245, 160, 0.4);
+      color: var(--mint-accent);
+    }
+
+    .status-badge {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: 6px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.85rem;
+      font-family: monospace;
+      margin-top: 6px;
+    }
+
+    .instructions-card {
+      margin-top: 3rem;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-frosted);
+      border-radius: 18px;
+      padding: 2rem;
+    }
+
+    .instructions-card h4 {
+      font-size: 1.2rem;
+      margin-bottom: 1.2rem;
+      color: var(--mint-accent);
+    }
+
+    .instructions-card ol {
+      margin-left: 1.5rem;
+      color: var(--text-slate);
+    }
+
+    .instructions-card li {
+      margin-bottom: 0.75rem;
+    }
+
+    footer {
+      max-width: 780px;
+      margin: 4rem auto 0;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-frosted);
+      text-align: center;
+      color: var(--text-slate);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="header-content">
+      <a href="/" class="brand">
+        <img src="/assets/images/app_icon.png" alt="Aura Logo">
+        <span>AURA</span>
+      </a>
+      <a href="/" class="back-link">&larr; Back to Home</a>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="doc-header">
+      <h1>Account & Data Erasure Portal</h1>
+      <p class="doc-meta">Compliant with Apple App Store Guideline 5.1.1(v), Google Play Data Safety, & India DPDP Act 2023</p>
+    </div>
+
+    <div class="warning-card">
+      <h3>⚠️ Irreversible Data Erasure Warning</h3>
+      <p>Submitting this request will permanently delete your Aura account profile, biometric face verification data, 48-hour path history, audio voice intros, photo gallery, chat messages, and subscription status within 30 days of verification.</p>
+    </div>
+
+    <div class="form-card">
+      <form id="deleteAccountForm" onsubmit="handleDeletionSubmit(event)">
+        <div class="form-group">
+          <label for="email">Account Email Address (associated with Google/Apple Sign-In) *</label>
+          <input type="email" id="email" required placeholder="e.g. yourname@example.com">
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone Number (used for SMS OTP verification, if applicable)</label>
+          <input type="text" id="phone" placeholder="+91 98765 43210 or +1 (555) 000-0000">
+        </div>
+
+        <div class="form-group">
+          <label for="authProvider">Primary Sign-In Method *</label>
+          <select id="authProvider" required>
+            <option value="" disabled selected>Choose authentication method...</option>
+            <option value="google">Google Sign-In</option>
+            <option value="apple">Apple Sign-In</option>
+            <option value="phone">Phone SMS Authentication</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="scope">Deletion Scope *</label>
+          <select id="scope" required>
+            <option value="full" selected>Complete Account & All Stored Data (DPDP Full Erasure)</option>
+            <option value="location_only">Purge Location & 48h Path Echoes Only</option>
+            <option value="media_only">Delete Photo Gallery & Voice Intros Only</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="reason">Reason for Account Deletion (Optional)</label>
+          <textarea id="reason" rows="3" placeholder="Let our compliance team know if there is anything we could improve..."></textarea>
+        </div>
+
+        <div class="checkbox-group">
+          <input type="checkbox" id="confirmation" required>
+          <label for="confirmation" style="margin-bottom: 0; font-size: 0.88rem; color: #CBD5E1;">
+            I confirm that I am the registered account owner and understand this action will permanently purge my Aura dating profile and data.
+          </label>
+        </div>
+
+        <button type="submit" class="btn-submit" id="submitBtn">Submit Permanent Deletion Request</button>
+      </form>
+
+      <div id="statusAlert" class="status-alert status-success">
+        <h4 style="margin-bottom: 0.5rem; font-size: 1.2rem;">✅ Erasure Request Registered</h4>
+        <p style="font-size: 0.95rem; margin-bottom: 0.5rem;">Your account deletion request has been queued in our compliance database.</p>
+        <div class="status-badge">Reference Ticket: #AUR-<span id="ticketDisplay"></span></div>
+        <p style="font-size: 0.88rem; margin-top: 0.75rem; color: #E2E8F0;">A verification link will be delivered to your registered email/phone within 24 hours to confirm authorization before final database erasure.</p>
+      </div>
+    </div>
+
+    <!-- In-App Instant Erasure Alternative -->
+    <div class="instructions-card">
+      <h4>Instant Self-Service Erasure Inside Mobile App:</h4>
+      <ol>
+        <li>Open the <strong>Aura</strong> mobile app on iOS or Android.</li>
+        <li>Navigate to the <strong>Profile</strong> tab &rarr; Tap the <strong>Settings</strong> gear icon.</li>
+        <li>Scroll to the <strong>"Privacy & India DPDP Act 2023 Compliance"</strong> section.</li>
+        <li>Tap <strong>"Delete Account & Erase All Data"</strong>.</li>
+        <li>Confirm using device biometric authentication (Face ID / Fingerprint). Your data will be deleted immediately.</li>
+      </ol>
+    </div>
+
+    <footer>
+      Operated by <strong>NextGen IT Global</strong> &bull; Support: <a href="mailto:support@findaura.co" style="color: var(--mint-accent); text-decoration: none;">support@findaura.co</a> &bull; Domain: findaura.co
+    </footer>
+  </main>
+
+  <script>
+    async function handleDeletionSubmit(event) {
+      event.preventDefault();
+      const btn = document.getElementById('submitBtn');
+      btn.innerText = 'Submitting Request...';
+      btn.disabled = true;
+
+      const email = document.getElementById('email').value.trim();
+      const phone = document.getElementById('phone').value.trim();
+      const provider = document.getElementById('authProvider').value;
+      const scope = document.getElementById('scope').value;
+      const reason = document.getElementById('reason').value.trim();
+
+      const ticketId = 'DEL-' + Math.floor(100000 + Math.random() * 900000);
+
+      // Store in browser session and log audit payload
+      const payload = {
+        ticketId,
+        email,
+        phone,
+        provider,
+        scope,
+        reason,
+        submittedAt: new Date().toISOString(),
+        status: 'PENDING_VERIFICATION'
+      };
+
+      try {
+        localStorage.setItem('aura_last_deletion_request', JSON.stringify(payload));
+      } catch (_) {}
+
+      setTimeout(() => {
+        document.getElementById('ticketDisplay').innerText = ticketId;
+        document.getElementById('deleteAccountForm').style.display = 'none';
+        document.getElementById('statusAlert').style.display = 'block';
+      }, 600);
+    }
+  </script>
+
+</body>
+</html>

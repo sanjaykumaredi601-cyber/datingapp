@@ -1,0 +1,29 @@
+{"users": [
+{
+  "localId": "mDrrChQ1ZIeQpSI0wxRJSVP8nvY2",
+  "email": "sanjaykumaredi601@gmail.com",
+  "emailVerified": true,
+  "displayName": "sanjaykumaredi",
+  "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocJnwezkAtuRV99V_QVb4_vj1EefdFlIoxdriCYK9Cue3JXiHw=s96-c",
+  "lastSignedInAt": "1791415615070",
+  "createdAt": "1791412409088",
+  "providerUserInfo": [
+    {
+      "providerId": "google.com",
+      "rawId": "109319168385963274866",
+      "email": "sanjaykumaredi601@gmail.com",
+      "displayName": "sanjaykumaredi",
+      "photoUrl": "https://lh3.googleusercontent.com/a/ACg8ocJnwezkAtuRV99V_QVb4_vj1EefdFlIoxdriCYK9Cue3JXiHw=s96-c"
+    }
+  ]
+},
+{
+  "localId": "phone_aura_user_verified",
+  "emailVerified": false,
+  "displayName": "Aura Verified Member",
+  "lastSignedInAt": "1791400270000",
+  "createdAt": "1791400270000",
+  "phoneNumber": "+919876543210",
+  "disabled": false,
+  "providerUserInfo": []
+}]}

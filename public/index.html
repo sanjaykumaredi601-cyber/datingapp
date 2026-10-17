@@ -1,0 +1,2061 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura — Bright, Colorful & 100% Verified Dating App</title>
+  <meta name="description" content="Discover genuine chemistry nearby with real-time Proximity Radar, 3D biometric liveness verification, Path-Crossing Echoes, and Voice Vibe. Download Aura today.">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <link rel="icon" type="image/png" href="./assets/images/app_icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Space+Grotesk:wght@600;700;800&family=Playfair+Display:ital,wght@1,600;1,700&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      /* Bright, Colorful, Cheerful Dating Palette */
+      --bg-main: #FFF9F7;
+      --bg-card: #FFFFFF;
+      --bg-card-subtle: #FFF3F0;
+      
+      --coral-rose: #FF3366;
+      --sunset-peach: #FF6B6B;
+      --warm-amber: #FFA114;
+      --sunshine-gold: #F59E0B;
+      --electric-lavender: #8B5CF6;
+      --berry-violet: #7C3AED;
+      --sky-cyan: #06B6D4;
+      --emerald-mint: #10B981;
+      
+      --text-heading: #181829;
+      --text-body: #4B5563;
+      --text-muted: #6B7280;
+      
+      --border-soft: rgba(255, 77, 103, 0.15);
+      --border-card: rgba(0, 0, 0, 0.06);
+      
+      --grad-sunset: linear-gradient(135deg, #FF3366 0%, #FF6B6B 50%, #FFA114 100%);
+      --grad-aurora: linear-gradient(135deg, #8B5CF6 0%, #FF3366 100%);
+      --grad-ocean: linear-gradient(135deg, #06B6D4 0%, #10B981 100%);
+      --grad-warm-card: linear-gradient(180deg, #FFFFFF 0%, #FFF5F2 100%);
+      
+      --shadow-color-sm: 0 4px 15px rgba(255, 51, 102, 0.12);
+      --shadow-color-md: 0 12px 35px rgba(255, 51, 102, 0.16);
+      --shadow-color-lg: 0 25px 60px rgba(255, 51, 102, 0.22);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background-color: var(--bg-main);
+      color: var(--text-heading);
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      background-image: 
+        radial-gradient(circle at 10% 15%, rgba(255, 107, 107, 0.15) 0%, transparent 40%),
+        radial-gradient(circle at 90% 25%, rgba(255, 161, 20, 0.16) 0%, transparent 45%),
+        radial-gradient(circle at 50% 65%, rgba(139, 92, 246, 0.12) 0%, transparent 50%),
+        radial-gradient(circle at 15% 85%, rgba(6, 182, 212, 0.14) 0%, transparent 40%);
+      background-attachment: fixed;
+    }
+
+    ::selection {
+      background: var(--coral-rose);
+      color: #fff;
+    }
+
+    /* Ambient Floating Pastel Blobs */
+    .blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      z-index: 0;
+      opacity: 0.65;
+    }
+
+    .blob-1 {
+      top: -100px;
+      left: 15%;
+      width: 500px;
+      height: 500px;
+      background: rgba(255, 107, 107, 0.25);
+      animation: floatSlow 7s ease-in-out infinite alternate;
+    }
+
+    .blob-2 {
+      top: 35%;
+      right: -50px;
+      width: 550px;
+      height: 550px;
+      background: rgba(255, 161, 20, 0.22);
+      animation: floatSlow 9s ease-in-out infinite alternate-reverse;
+    }
+
+    @keyframes floatSlow {
+      0% { transform: translateY(0) scale(1); }
+      100% { transform: translateY(35px) scale(1.08); }
+    }
+
+    /* Header Navigation */
+    header {
+      position: sticky;
+      top: 0;
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      background: rgba(255, 255, 255, 0.88);
+      border-bottom: 1px solid var(--border-soft);
+      z-index: 1000;
+      padding: 1.1rem 2rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+    }
+
+    .header-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .brand-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 14px;
+      box-shadow: 0 6px 20px rgba(255, 51, 102, 0.35);
+      transition: transform 0.3s ease;
+    }
+
+    .brand-logo:hover .brand-icon {
+      transform: scale(1.08) rotate(4deg);
+    }
+
+    .brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.8rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      background: var(--grad-sunset);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .brand-tag {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 1.2px;
+      background: #FFE4E6;
+      color: var(--coral-rose);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-weight: 800;
+      margin-left: 6px;
+    }
+
+    nav.nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+    }
+
+    .nav-link {
+      color: var(--text-body);
+      text-decoration: none;
+      font-size: 0.96rem;
+      font-weight: 700;
+      transition: color 0.2s ease;
+      position: relative;
+    }
+
+    .nav-link:hover {
+      color: var(--coral-rose);
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: var(--grad-sunset);
+      transition: width 0.25s ease;
+      border-radius: 3px;
+    }
+
+    .nav-link:hover::after {
+      width: 100%;
+    }
+
+    .btn-header-cta {
+      background: var(--grad-sunset);
+      color: #FFFFFF;
+      font-weight: 800;
+      font-size: 0.95rem;
+      padding: 0.8rem 1.8rem;
+      border-radius: 50px;
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .btn-header-cta:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(255, 51, 102, 0.55);
+    }
+
+    /* Hero Section */
+    .hero-section {
+      position: relative;
+      max-width: 1240px;
+      margin: 0 auto;
+      padding: 4.5rem 2rem 5rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .hero-content {
+      max-width: 650px;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: #FFE4E6;
+      border: 1px solid rgba(255, 51, 102, 0.25);
+      padding: 0.5rem 1.3rem;
+      border-radius: 50px;
+      font-size: 0.88rem;
+      font-weight: 800;
+      color: var(--coral-rose);
+      margin-bottom: 1.8rem;
+      box-shadow: 0 4px 15px rgba(255, 51, 102, 0.12);
+    }
+
+    .pulse-dot {
+      width: 10px;
+      height: 10px;
+      background: var(--coral-rose);
+      border-radius: 50%;
+      box-shadow: 0 0 12px var(--coral-rose);
+      animation: heartPulse 1.8s infinite;
+    }
+
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); opacity: 1; }
+      50% { transform: scale(1.5); opacity: 0.6; }
+    }
+
+    .hero-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.8rem, 4.8vw, 4.3rem);
+      font-weight: 800;
+      line-height: 1.12;
+      letter-spacing: -1.5px;
+      margin-bottom: 1.5rem;
+      color: var(--text-heading);
+    }
+
+    .font-serif-italic {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 700;
+      background: var(--grad-sunset);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .gradient-text-color {
+      background: var(--grad-aurora);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-subtitle {
+      font-size: clamp(1.05rem, 1.4vw, 1.25rem);
+      color: var(--text-body);
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 1.2rem;
+      margin-bottom: 3rem;
+    }
+
+    .btn-download-store {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      background: #FFFFFF;
+      border: 1px solid var(--border-card);
+      padding: 0.9rem 1.8rem;
+      border-radius: 18px;
+      text-decoration: none;
+      color: var(--text-heading);
+      transition: all 0.3s ease;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .btn-download-store:hover {
+      border-color: var(--coral-rose);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-color-md);
+    }
+
+    .btn-download-store svg {
+      width: 28px;
+      height: 28px;
+      fill: var(--text-heading);
+    }
+
+    .btn-download-store .btn-sub {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--text-muted);
+      display: block;
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    .btn-download-store .btn-main {
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: block;
+      line-height: 1.2;
+    }
+
+    .hero-trust-metrics {
+      display: flex;
+      align-items: center;
+      gap: 1.8rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+    }
+
+    .avatar-stack {
+      display: flex;
+      align-items: center;
+    }
+
+    .avatar-stack img {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 3px solid #FFFFFF;
+      margin-left: -12px;
+      object-fit: cover;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .avatar-stack img:first-child {
+      margin-left: 0;
+    }
+
+    .trust-text {
+      font-size: 0.92rem;
+      color: var(--text-body);
+    }
+
+    .trust-text strong {
+      color: var(--text-heading);
+      font-weight: 800;
+    }
+
+    /* Vibrant Smartphone Mockup with 3D Avatar Swiping Deck */
+    .hero-phone-showcase {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .phone-outer-frame {
+      position: relative;
+      width: 345px;
+      height: 690px;
+      background: #FFFFFF;
+      border-radius: 54px;
+      padding: 12px;
+      box-shadow: 
+        0 25px 70px rgba(255, 51, 102, 0.2),
+        0 8px 25px rgba(0, 0, 0, 0.08),
+        0 0 0 2px rgba(255, 107, 107, 0.3);
+      border: 4px solid #FFE4E6;
+      z-index: 20;
+    }
+
+    .phone-screen {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      background: #FFF9F7;
+      border-radius: 44px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      box-shadow: inset 0 0 15px rgba(0, 0, 0, 0.03);
+    }
+
+    /* Dynamic Island */
+    .dynamic-island {
+      position: absolute;
+      top: 10px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 96px;
+      height: 24px;
+      background: #181829;
+      border-radius: 20px;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+    }
+
+    .camera-lens {
+      width: 9px;
+      height: 9px;
+      background: #2D2D44;
+      border-radius: 50%;
+    }
+
+    .sensor-light {
+      width: 6px;
+      height: 6px;
+      background: #10B981;
+      border-radius: 50%;
+      box-shadow: 0 0 6px #10B981;
+    }
+
+    /* Phone Top Bar */
+    .phone-header {
+      padding: 42px 18px 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      background: #FFFFFF;
+      z-index: 10;
+    }
+
+    .phone-location-pill {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.78rem;
+      font-weight: 800;
+      color: var(--coral-rose);
+      background: #FFF1F2;
+      padding: 5px 12px;
+      border-radius: 20px;
+      border: 1px solid #FFE4E6;
+    }
+
+    .phone-radar-indicator {
+      width: 8px;
+      height: 8px;
+      background: var(--coral-rose);
+      border-radius: 50%;
+      animation: heartPulse 1.5s infinite;
+    }
+
+    /* Phone Main Card Stack */
+    .card-deck-container {
+      position: relative;
+      flex: 1;
+      padding: 14px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .dating-card {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: 30px;
+      overflow: hidden;
+      background: #FFFFFF;
+      box-shadow: 0 15px 35px rgba(255, 51, 102, 0.15);
+      border: 2px solid #FFE4E6;
+      transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.3s ease;
+      user-select: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card-avatar-wrap {
+      position: relative;
+      width: 100%;
+      height: 65%;
+      background: linear-gradient(135deg, #FFE4E6 0%, #FEF3C7 100%);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .card-photo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.6s ease;
+    }
+
+    .card-verified-badge {
+      position: absolute;
+      top: 12px;
+      left: 12px;
+      background: #ECFDF5;
+      border: 1px solid #A7F3D0;
+      color: #059669;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      padding: 5px 10px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-compatibility-badge {
+      position: absolute;
+      top: 12px;
+      right: 12px;
+      background: #FFF1F2;
+      border: 1px solid #FECDD3;
+      color: #E11D48;
+      font-size: 0.74rem;
+      font-weight: 800;
+      padding: 5px 10px;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .card-details {
+      padding: 14px 16px;
+      background: #FFFFFF;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .card-name-row {
+      display: flex;
+      align-items: baseline;
+      gap: 8px;
+    }
+
+    .card-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .card-age {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .card-distance {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: var(--sunset-peach);
+      margin-top: 2px;
+      margin-bottom: 8px;
+    }
+
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 8px;
+    }
+
+    .card-tag-pill {
+      background: #FFF1F2;
+      border: 1px solid #FFE4E6;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--coral-rose);
+      padding: 4px 9px;
+      border-radius: 12px;
+    }
+
+    .card-tag-pill:nth-child(2) {
+      background: #FEF3C7;
+      border-color: #FDE68A;
+      color: #D97706;
+    }
+
+    .card-tag-pill:nth-child(3) {
+      background: #F3E8FF;
+      border-color: #E9D5FF;
+      color: #7C3AED;
+    }
+
+    /* Voice Vibe snippet preview inside card */
+    .card-voice-vibe {
+      background: linear-gradient(135deg, #FDF4FF 0%, #FFF1F2 100%);
+      border: 1px solid #FBCFE8;
+      border-radius: 14px;
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .voice-play-btn {
+      width: 26px;
+      height: 26px;
+      background: var(--grad-sunset);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #FFFFFF;
+      font-size: 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(255, 51, 102, 0.3);
+    }
+
+    .voice-wave {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      flex: 1;
+    }
+
+    .wave-bar {
+      width: 3px;
+      height: 12px;
+      background: #EC4899;
+      border-radius: 2px;
+      animation: wavePulse 1.2s ease-in-out infinite alternate;
+    }
+
+    .wave-bar:nth-child(2) { height: 18px; animation-delay: 0.2s; background: #8B5CF6; }
+    .wave-bar:nth-child(3) { height: 8px; animation-delay: 0.4s; background: #FFA114; }
+    .wave-bar:nth-child(4) { height: 16px; animation-delay: 0.1s; background: #EC4899; }
+    .wave-bar:nth-child(5) { height: 20px; animation-delay: 0.3s; background: #8B5CF6; }
+    .wave-bar:nth-child(6) { height: 10px; animation-delay: 0.5s; background: #FFA114; }
+
+    @keyframes wavePulse {
+      0% { transform: scaleY(0.4); }
+      100% { transform: scaleY(1.3); }
+    }
+
+    /* Phone Controls */
+    .phone-actions-bar {
+      padding: 10px 20px 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #FFFFFF;
+      border-top: 1px solid rgba(0, 0, 0, 0.04);
+      z-index: 10;
+    }
+
+    .action-btn {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.3rem;
+      transition: all 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      box-shadow: 0 6px 15px rgba(0, 0, 0, 0.08);
+    }
+
+    .action-btn:hover {
+      transform: scale(1.15);
+    }
+
+    .action-btn:active {
+      transform: scale(0.92);
+    }
+
+    .btn-dislike {
+      background: #FEE2E2;
+      border: 1px solid #FECACA;
+      color: #EF4444;
+    }
+
+    .btn-superlike {
+      width: 44px;
+      height: 44px;
+      background: #FEF3C7;
+      border: 1px solid #FDE68A;
+      color: #D97706;
+      font-size: 1.1rem;
+    }
+
+    .btn-like {
+      background: var(--grad-sunset);
+      color: #FFFFFF;
+      box-shadow: 0 8px 25px rgba(255, 51, 102, 0.4);
+    }
+
+    /* Floating Badges Around Phone */
+    .floating-pill {
+      position: absolute;
+      background: #FFFFFF;
+      border: 1px solid #FFE4E6;
+      border-radius: 22px;
+      padding: 12px 20px;
+      box-shadow: 0 15px 35px rgba(255, 51, 102, 0.15);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      z-index: 30;
+      animation: floatBadge 5s ease-in-out infinite alternate;
+    }
+
+    .pill-left-bottom {
+      bottom: 70px;
+      left: -50px;
+      border-color: #A7F3D0;
+      animation-delay: 0.5s;
+    }
+
+    .pill-right-top {
+      top: 90px;
+      right: -45px;
+      border-color: #FECDD3;
+      animation-delay: 1.5s;
+    }
+
+    @keyframes floatBadge {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-12px); }
+    }
+
+    .pill-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .pill-icon-rose { background: #FFE4E6; color: var(--coral-rose); }
+    .pill-icon-mint { background: #D1FAE5; color: #059669; }
+
+    .pill-title {
+      font-size: 0.85rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      line-height: 1.2;
+    }
+
+    .pill-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.2;
+      font-weight: 600;
+    }
+
+    /* Spark Toast Notification */
+    .spark-toast {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0.8);
+      background: #FFFFFF;
+      border: 2px solid var(--coral-rose);
+      border-radius: 26px;
+      padding: 22px 28px;
+      text-align: center;
+      box-shadow: 0 15px 50px rgba(255, 51, 102, 0.35);
+      z-index: 200;
+      opacity: 0;
+      pointer-events: none;
+      transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+
+    .spark-toast.active {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
+    }
+
+    /* Singles Infinite Carousel / Live Vibe */
+    .singles-carousel-section {
+      margin: 5rem 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1.8rem;
+      width: max-content;
+      animation: scrollProfiles 28s linear infinite;
+    }
+
+    .carousel-track:hover {
+      animation-play-state: paused;
+    }
+
+    @keyframes scrollProfiles {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    .carousel-profile-card {
+      width: 250px;
+      height: 330px;
+      border-radius: 26px;
+      overflow: hidden;
+      position: relative;
+      flex-shrink: 0;
+      box-shadow: 0 12px 30px rgba(255, 51, 102, 0.12);
+      border: 2px solid #FFE4E6;
+      background: #FFFFFF;
+      transition: transform 0.3s ease;
+    }
+
+    .carousel-profile-card:hover {
+      transform: scale(1.05);
+      border-color: var(--coral-rose);
+      box-shadow: 0 20px 45px rgba(255, 51, 102, 0.22);
+    }
+
+    .carousel-profile-card img {
+      width: 100%;
+      height: 72%;
+      object-fit: cover;
+      background: #FFF1F2;
+    }
+
+    .carousel-info {
+      padding: 12px 14px;
+      background: #FFFFFF;
+    }
+
+    .carousel-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.15rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .carousel-sub {
+      font-size: 0.8rem;
+      color: var(--coral-rose);
+      font-weight: 700;
+    }
+
+    /* Live Proximity Radar Section (Vibrant & Cheerful) */
+    .radar-showcase-section {
+      position: relative;
+      max-width: 1240px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      z-index: 10;
+    }
+
+    .section-header-center {
+      text-align: center;
+      max-width: 740px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-eyebrow {
+      text-transform: uppercase;
+      font-size: 0.84rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      color: var(--coral-rose);
+      margin-bottom: 10px;
+      display: inline-block;
+      background: #FFE4E6;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+
+    .section-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.2rem, 3.8vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      letter-spacing: -1px;
+      margin-top: 10px;
+      margin-bottom: 1rem;
+      color: var(--text-heading);
+    }
+
+    .section-desc {
+      font-size: 1.12rem;
+      color: var(--text-body);
+    }
+
+    .radar-interactive-box {
+      background: #FFFFFF;
+      border: 2px solid #FFE4E6;
+      border-radius: 40px;
+      padding: 3.5rem 2.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3.5rem;
+      align-items: center;
+      box-shadow: 0 20px 60px rgba(255, 51, 102, 0.12);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .radar-circle-visual {
+      position: relative;
+      width: 100%;
+      max-width: 440px;
+      aspect-ratio: 1;
+      margin: 0 auto;
+      border-radius: 50%;
+      border: 2px solid rgba(255, 51, 102, 0.25);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle, #FFF1F2 0%, #FFFFFF 70%);
+      box-shadow: 0 0 50px rgba(255, 51, 102, 0.12);
+    }
+
+    .radar-ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px dashed rgba(255, 51, 102, 0.2);
+    }
+
+    .radar-ring-1 { width: 33%; height: 33%; }
+    .radar-ring-2 { width: 66%; height: 66%; }
+    .radar-ring-3 { width: 95%; height: 95%; }
+
+    .radar-sweep-beam {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 50%;
+      height: 50%;
+      transform-origin: bottom left;
+      background: conic-gradient(from 180deg at bottom left, rgba(255, 51, 102, 0.3) 0deg, transparent 65deg);
+      animation: rotateRadar 4.5s linear infinite;
+    }
+
+    @keyframes rotateRadar {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .radar-center-point {
+      width: 24px;
+      height: 24px;
+      background: var(--coral-rose);
+      border-radius: 50%;
+      box-shadow: 0 0 20px var(--coral-rose);
+      z-index: 10;
+      position: relative;
+      border: 3px solid #FFFFFF;
+    }
+
+    .radar-user-pin {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #FFFFFF;
+      border: 2px solid var(--coral-rose);
+      padding: 5px 14px 5px 6px;
+      border-radius: 35px;
+      cursor: pointer;
+      box-shadow: 0 8px 25px rgba(255, 51, 102, 0.25);
+      transition: all 0.3s ease;
+      z-index: 20;
+    }
+
+    .radar-user-pin:hover {
+      transform: scale(1.15);
+      box-shadow: 0 12px 30px rgba(255, 51, 102, 0.4);
+    }
+
+    .pin-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid #FFE4E6;
+    }
+
+    .pin-info-name {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .pin-info-dist {
+      font-size: 0.7rem;
+      color: var(--coral-rose);
+      font-weight: 700;
+    }
+
+    /* Radar Features Info column */
+    .radar-features-col {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .radar-feature-card {
+      background: #FFF9F7;
+      border: 1.5px solid #FFE4E6;
+      border-radius: 24px;
+      padding: 1.6rem;
+      transition: all 0.3s ease;
+    }
+
+    .radar-feature-card:hover {
+      background: #FFFFFF;
+      border-color: var(--coral-rose);
+      transform: translateX(6px);
+      box-shadow: var(--shadow-color-sm);
+    }
+
+    .feature-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 8px;
+    }
+
+    .feature-emoji {
+      font-size: 1.8rem;
+    }
+
+    .feature-heading {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--text-heading);
+    }
+
+    .feature-body {
+      font-size: 0.96rem;
+      color: var(--text-body);
+      line-height: 1.6;
+    }
+
+    /* Core Pillars (Colorful Cards) */
+    .pillars-section {
+      max-width: 1240px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+      gap: 2rem;
+    }
+
+    .pillar-card {
+      background: #FFFFFF;
+      border: 2px solid #FFE4E6;
+      border-radius: 30px;
+      padding: 2.2rem;
+      transition: all 0.35s ease;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+    }
+
+    .pillar-card:hover {
+      border-color: var(--coral-rose);
+      transform: translateY(-8px);
+      box-shadow: var(--shadow-color-md);
+    }
+
+    .pillar-icon-box {
+      width: 60px;
+      height: 60px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      background: #FFF1F2;
+      border: 1px solid #FFE4E6;
+    }
+
+    .card-pink .pillar-icon-box { background: #FFE4E6; }
+    .card-amber .pillar-icon-box { background: #FEF3C7; }
+    .card-purple .pillar-icon-box { background: #F3E8FF; }
+    .card-mint .pillar-icon-box { background: #D1FAE5; }
+
+    .pillar-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 800;
+      margin-bottom: 0.8rem;
+      color: var(--text-heading);
+    }
+
+    .pillar-desc {
+      font-size: 0.96rem;
+      color: var(--text-body);
+      line-height: 1.65;
+    }
+
+    /* Real Love Stories (Playful & Warm) */
+    .stories-section {
+      max-width: 1240px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      z-index: 10;
+      position: relative;
+    }
+
+    .stories-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 2rem;
+    }
+
+    .story-card {
+      background: #FFFFFF;
+      border: 2px solid #FFE4E6;
+      border-radius: 30px;
+      padding: 2.4rem;
+      position: relative;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.04);
+      transition: all 0.3s ease;
+    }
+
+    .story-card:hover {
+      border-color: var(--coral-rose);
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-color-md);
+    }
+
+    .quote-badge {
+      font-size: 2.5rem;
+      color: var(--coral-rose);
+      line-height: 1;
+      margin-bottom: 12px;
+      font-family: 'Playfair Display', serif;
+    }
+
+    .story-quote {
+      font-size: 1.05rem;
+      color: var(--text-heading);
+      line-height: 1.7;
+      margin-bottom: 1.8rem;
+      font-style: italic;
+    }
+
+    .story-author {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .author-avatar {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--coral-rose);
+      box-shadow: 0 4px 10px rgba(255, 51, 102, 0.2);
+    }
+
+    .author-name {
+      font-weight: 800;
+      color: var(--text-heading);
+      font-size: 1.05rem;
+    }
+
+    .author-location {
+      font-size: 0.85rem;
+      color: var(--coral-rose);
+      font-weight: 700;
+    }
+
+    /* Cheerful Colorful 3D Couple Download Banner */
+    .cta-banner-section {
+      max-width: 1240px;
+      margin: 6rem auto;
+      padding: 0 2rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .cta-banner-box {
+      position: relative;
+      border-radius: 44px;
+      overflow: hidden;
+      padding: 5.5rem 3rem;
+      text-align: center;
+      box-shadow: 0 25px 70px rgba(255, 51, 102, 0.25);
+      border: 3px solid #FFE4E6;
+      background: linear-gradient(135deg, rgba(255, 255, 255, 0.94) 0%, rgba(255, 241, 242, 0.94) 100%);
+    }
+
+    .cta-bg-image {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      opacity: 0.18;
+      filter: saturate(1.4);
+    }
+
+    .cta-banner-content {
+      position: relative;
+      z-index: 10;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .cta-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: clamp(2.4rem, 4.2vw, 3.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -1.2px;
+      margin-bottom: 1.2rem;
+      color: var(--text-heading);
+    }
+
+    .cta-desc {
+      font-size: 1.18rem;
+      color: var(--text-body);
+      margin-bottom: 2.5rem;
+    }
+
+    .cta-action-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+    }
+
+    /* Bright Clean Footer */
+    footer {
+      background: #FFFFFF;
+      border-top: 1px solid #FFE4E6;
+      padding: 4.5rem 2rem 2.5rem;
+      position: relative;
+      z-index: 10;
+    }
+
+    .footer-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand p {
+      color: var(--text-body);
+      font-size: 0.95rem;
+      margin-top: 1rem;
+      max-width: 320px;
+    }
+
+    .footer-col h4 {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--text-heading);
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.5px;
+    }
+
+    .footer-links {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+    }
+
+    .footer-links a {
+      color: var(--text-body);
+      text-decoration: none;
+      font-size: 0.94rem;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .footer-links a:hover {
+      color: var(--coral-rose);
+    }
+
+    .footer-bottom {
+      max-width: 1240px;
+      margin: 0 auto;
+      padding-top: 2rem;
+      border-top: 1px solid #FFE4E6;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    /* Responsive */
+    @media (max-width: 968px) {
+      .hero-section {
+        grid-template-columns: 1fr;
+        text-align: center;
+        padding-top: 3rem;
+      }
+      .hero-content {
+        margin: 0 auto;
+      }
+      .hero-cta-group {
+        justify-content: center;
+      }
+      .hero-trust-metrics {
+        justify-content: center;
+      }
+      .radar-interactive-box {
+        grid-template-columns: 1fr;
+      }
+      .footer-inner {
+        grid-template-columns: 1fr 1fr;
+      }
+      nav.nav-menu {
+        display: none;
+      }
+      .phone-outer-frame {
+        width: 310px;
+        height: 640px;
+      }
+      .floating-pill {
+        display: none;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+      }
+      .cta-banner-box {
+        padding: 3rem 1.5rem;
+      }
+      .phone-outer-frame {
+        width: 290px;
+        height: 590px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient Glowing Blobs -->
+  <div class="blob blob-1"></div>
+  <div class="blob blob-2"></div>
+
+  <!-- Sticky Premium Navigation -->
+  <header>
+    <div class="header-inner">
+      <a href="/" class="brand-logo">
+        <img src="./assets/images/app_icon.png" alt="Aura Dating Logo" class="brand-icon">
+        <span class="brand-name">Aura</span>
+        <span class="brand-tag">DATING</span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="#radar" class="nav-link">Live Radar</a>
+        <a href="#echoes" class="nav-link">Path Echoes</a>
+        <a href="#verification" class="nav-link">Zero Catfish</a>
+        <a href="#stories" class="nav-link">Love Stories</a>
+      </nav>
+
+      <div class="header-actions">
+        <a href="#download" class="btn-header-cta">
+          <span>Get Aura App</span>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section">
+    <div class="hero-content">
+      <div class="hero-badge">
+        <div class="pulse-dot"></div>
+        <span>SPARK REAL CHEMISTRY IN YOUR ORBIT</span>
+      </div>
+
+      <h1 class="hero-title">
+        Meet Someone Who Gives You <span class="font-serif-italic">Butterflies</span>, <span class="gradient-text-color">Right Now.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        Say goodbye to dry texts and endless swiping. Aura pairs 3D-verified singles nearby using real-time <strong>Proximity Radar</strong> and <strong>Path-Crossing Echoes</strong>. Genuine attraction within walking distance.
+      </p>
+
+      <div class="hero-cta-group">
+        <a href="https://play.google.com/store/apps/details?id=com.nextgen.aura.dating" class="btn-download-store" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24">
+            <path d="M3.609 1.814L13.792 12 3.61 22.186c-.368-.328-.61-.852-.61-1.474V3.288c0-.622.242-1.146.61-1.474zM15.207 13.414l2.502 2.502-12.78 7.378 10.278-9.88zM4.929.706l12.78 7.378-2.502 2.502L4.93.706zM18.89 11.237l3.208 1.852c.84.485.84 1.275 0 1.76l-3.208 1.852-2.316-2.316 2.316-2.148z"/>
+          </svg>
+          <div>
+            <span class="btn-sub">GET IT ON</span>
+            <span class="btn-main">Google Play</span>
+          </div>
+        </a>
+
+        <a href="#download" class="btn-download-store">
+          <svg viewBox="0 0 24 24">
+            <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.79 1.06-1.88.94-2.98-.93.04-2.07.63-2.73 1.4-.58.67-1.09 1.76-.95 2.84 1.05.08 2.11-.47 2.74-1.26"/>
+          </svg>
+          <div>
+            <span class="btn-sub">DOWNLOAD ON</span>
+            <span class="btn-main">App Store</span>
+          </div>
+        </a>
+      </div>
+
+      <div class="hero-trust-metrics">
+        <div class="avatar-stack">
+          <img src="./assets/images/avatar_1.jpg" alt="Aura Member Avatar">
+          <img src="./assets/images/avatar_2.jpg" alt="Aura Member Avatar">
+          <img src="./assets/images/avatar_3.jpg" alt="Aura Member Avatar">
+          <img src="./assets/images/avatar_4.jpg" alt="Aura Member Avatar">
+        </div>
+        <div class="trust-text">
+          <strong>50,000+ Verified Singles</strong> in your neighborhood<br>
+          <span style="color: #F59E0B;">★★★★★</span> <strong>4.8 / 5</strong> on App Store & Google Play
+        </div>
+      </div>
+    </div>
+
+    <!-- Vibrant 3D Smartphone Mockup (Zero Real Photo Privacy Issues) -->
+    <div class="hero-phone-showcase">
+      <!-- Floating Badge 1 -->
+      <div class="floating-pill pill-right-top">
+        <div class="pill-icon pill-icon-rose">✨</div>
+        <div>
+          <div class="pill-title">98% Chemistry Spark</div>
+          <div class="pill-subtitle">Shared vinyl & cafe vibe</div>
+        </div>
+      </div>
+
+      <!-- Floating Badge 2 -->
+      <div class="floating-pill pill-left-bottom">
+        <div class="pill-icon pill-icon-mint">📍</div>
+        <div>
+          <div class="pill-title">Crossed Paths Today</div>
+          <div class="pill-subtitle">Bandra Bandstand · 250m</div>
+        </div>
+      </div>
+
+      <!-- Smartphone Device Frame -->
+      <div class="phone-outer-frame">
+        <div class="phone-screen">
+          <div class="dynamic-island">
+            <div class="camera-lens"></div>
+            <div class="sensor-light"></div>
+          </div>
+
+          <!-- Phone Top Bar -->
+          <div class="phone-header">
+            <div class="phone-location-pill">
+              <span class="phone-radar-indicator"></span>
+              <span id="phoneDistanceDisplay">Radar: 350m</span>
+            </div>
+            <div style="font-size: 0.78rem; color: #6B7280; font-weight: 800;">AURA DISCOVERY</div>
+          </div>
+
+          <!-- Phone Card Container with Live Swiping Logic -->
+          <div class="card-deck-container">
+            <div class="dating-card" id="activeDatingCard">
+              <div class="card-avatar-wrap">
+                <img src="./assets/images/avatar_1.jpg" id="cardImage" class="card-photo-img" alt="Maya">
+                
+                <div class="card-verified-badge">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg>
+                  3D VERIFIED
+                </div>
+
+                <div class="card-compatibility-badge" id="cardCompatBadge">
+                  98% VIBE
+                </div>
+              </div>
+
+              <div class="card-details">
+                <div>
+                  <div class="card-name-row">
+                    <span class="card-name" id="cardName">Maya</span>
+                    <span class="card-age" id="cardAge">24</span>
+                  </div>
+
+                  <div class="card-distance" id="cardDistance">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M12 2a8 8 0 0 0-8 8c0 5.25 8 12 8 12s8-6.75 8-12a8 8 0 0 0-8-8z"/><circle cx="12" cy="10" r="3"/></svg>
+                    <span id="cardDistText">350m away · Central Park Cafe</span>
+                  </div>
+
+                  <div class="card-tags" id="cardTags">
+                    <span class="card-tag-pill">☕ Matcha Latte</span>
+                    <span class="card-tag-pill">📸 35mm Film</span>
+                    <span class="card-tag-pill">✈️ Kyoto Soon</span>
+                  </div>
+                </div>
+
+                <!-- Voice Note Preview -->
+                <div class="card-voice-vibe">
+                  <div class="voice-play-btn" id="voicePlayBtn">▶</div>
+                  <div class="voice-wave">
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                    <div class="wave-bar"></div>
+                  </div>
+                  <span style="font-size: 0.72rem; color: #7C3AED; font-weight: 800;">Voice Vibe · 0:14</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Toast Celebration Popup -->
+            <div class="spark-toast" id="sparkToast">
+              <div style="font-size: 2.2rem; margin-bottom: 6px;">💖 🎉</div>
+              <div style="font-family: 'Space Grotesk', sans-serif; font-size: 1.3rem; font-weight: 800; color: #181829;">It's an Aura Match!</div>
+              <div style="font-size: 0.85rem; color: #E11D48; margin-top: 4px; font-weight: 600;">You both have great taste. Start chatting now!</div>
+            </div>
+          </div>
+
+          <!-- Action Buttons Bar -->
+          <div class="phone-actions-bar">
+            <button class="action-btn btn-dislike" id="btnDislike" title="Pass">✕</button>
+            <button class="action-btn btn-superlike" id="btnSuperlike" title="Super Spark">★</button>
+            <button class="action-btn btn-like" id="btnLike" title="Aura Match">♥</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Infinite Singles Marquee Stream -->
+  <section class="singles-carousel-section">
+    <div class="carousel-track">
+      <!-- Card 1 -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_1.jpg" alt="Maya">
+        <div class="carousel-info">
+          <div class="carousel-name">Maya, 24</div>
+          <div class="carousel-sub">350m · Architect & Coffee Snob</div>
+        </div>
+      </div>
+      <!-- Card 2 -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_2.jpg" alt="Aarav">
+        <div class="carousel-info">
+          <div class="carousel-name">Aarav, 26</div>
+          <div class="carousel-sub">800m · Rooftop Vinyl Collector</div>
+        </div>
+      </div>
+      <!-- Card 3 -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_3.jpg" alt="Sofia">
+        <div class="carousel-info">
+          <div class="carousel-name">Sofia, 23</div>
+          <div class="carousel-sub">1.2km · Art Director & Baker</div>
+        </div>
+      </div>
+      <!-- Card 4 -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_4.jpg" alt="Leo">
+        <div class="carousel-info">
+          <div class="carousel-name">Leo, 25</div>
+          <div class="carousel-sub">450m · Indie Game Designer</div>
+        </div>
+      </div>
+      <!-- Card 5 -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_5.jpg" alt="Chloe">
+        <div class="carousel-info">
+          <div class="carousel-name">Chloe, 26</div>
+          <div class="carousel-sub">600m · Sunset Chaser & Wine Vibe</div>
+        </div>
+      </div>
+      <!-- Duplicate for seamless infinite loop -->
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_1.jpg" alt="Maya">
+        <div class="carousel-info">
+          <div class="carousel-name">Maya, 24</div>
+          <div class="carousel-sub">350m · Architect & Coffee Snob</div>
+        </div>
+      </div>
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_2.jpg" alt="Aarav">
+        <div class="carousel-info">
+          <div class="carousel-name">Aarav, 26</div>
+          <div class="carousel-sub">800m · Rooftop Vinyl Collector</div>
+        </div>
+      </div>
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_3.jpg" alt="Sofia">
+        <div class="carousel-info">
+          <div class="carousel-name">Sofia, 23</div>
+          <div class="carousel-sub">1.2km · Art Director & Baker</div>
+        </div>
+      </div>
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_4.jpg" alt="Leo">
+        <div class="carousel-info">
+          <div class="carousel-name">Leo, 25</div>
+          <div class="carousel-sub">450m · Indie Game Designer</div>
+        </div>
+      </div>
+      <div class="carousel-profile-card">
+        <img src="./assets/images/avatar_5.jpg" alt="Chloe">
+        <div class="carousel-info">
+          <div class="carousel-name">Chloe, 26</div>
+          <div class="carousel-sub">600m · Sunset Chaser & Wine Vibe</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Cheerful Proximity Radar Experience -->
+  <section class="radar-showcase-section" id="radar">
+    <div class="section-header-center">
+      <span class="section-eyebrow">HYPERLOCAL CHEMISTRY</span>
+      <h2 class="section-title">See Who's Radiating in Your Neighborhood.</h2>
+      <p class="section-desc">Spot compatible singles at your favorite cafe, bookstore, park, or campus in real-time with zero creepy location trails.</p>
+    </div>
+
+    <div class="radar-interactive-box">
+      <!-- Radar Simulation Graphic with Clickable Avatar Pins -->
+      <div class="radar-circle-visual">
+        <div class="radar-ring radar-ring-1"></div>
+        <div class="radar-ring radar-ring-2"></div>
+        <div class="radar-ring radar-ring-3"></div>
+        <div class="radar-sweep-beam"></div>
+        <div class="radar-center-point"></div>
+
+        <!-- Dynamic User Pins On Radar -->
+        <div class="radar-user-pin" style="top: 22%; left: 16%;" onclick="highlightRadarCandidate('Maya', '24', '350m', 'Architect & Coffee Lover', './assets/images/avatar_1.jpg')">
+          <img src="./assets/images/avatar_1.jpg" class="pin-avatar" alt="Maya">
+          <div>
+            <div class="pin-info-name">Maya, 24</div>
+            <div class="pin-info-dist">350m away</div>
+          </div>
+        </div>
+
+        <div class="radar-user-pin" style="bottom: 24%; right: 18%;" onclick="highlightRadarCandidate('Aarav', '26', '600m', 'Vinyl Collector & Musician', './assets/images/avatar_2.jpg')">
+          <img src="./assets/images/avatar_2.jpg" class="pin-avatar" alt="Aarav">
+          <div>
+            <div class="pin-info-name">Aarav, 26</div>
+            <div class="pin-info-dist">600m away</div>
+          </div>
+        </div>
+
+        <div class="radar-user-pin" style="top: 32%; right: 12%;" onclick="highlightRadarCandidate('Chloe', '26', '850m', 'Sunset Chaser & Tennis Fan', './assets/images/avatar_5.jpg')">
+          <img src="./assets/images/avatar_5.jpg" class="pin-avatar" alt="Chloe">
+          <div>
+            <div class="pin-info-name">Chloe, 26</div>
+            <div class="pin-info-dist">850m away</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Radar Features & Selected Candidate Details -->
+      <div class="radar-features-col">
+        <div class="radar-feature-card" id="radarCandidateCard" style="border-color: var(--coral-rose); background: #FFF1F2;">
+          <div class="feature-icon-title">
+            <span class="feature-emoji">⚡</span>
+            <h3 class="feature-heading" id="radarCandidateHeading">Tap Any Candidate on the Radar</h3>
+          </div>
+          <p class="feature-body" id="radarCandidateBody">
+            Click on the floating radar pins to preview singles in your immediate orbit. When you're at a concert or lounge, Aura reveals who shares your vibe.
+          </p>
+        </div>
+
+        <div class="radar-feature-card">
+          <div class="feature-icon-title">
+            <span class="feature-emoji">🛡️</span>
+            <h3 class="feature-heading">Ghost Mode & Total Discretion</h3>
+          </div>
+          <p class="feature-body">
+            You are always in control. Toggle Ghost Mode anytime to go completely invisible, or blur your radius to a safe 500m zone.
+          </p>
+        </div>
+
+        <div class="radar-feature-card">
+          <div class="feature-icon-title">
+            <span class="feature-emoji">👣</span>
+            <h3 class="feature-heading">Path-Crossing Echoes</h3>
+          </div>
+          <p class="feature-body">
+            Did you cross paths during your morning commute? Aura's Echoes remembers mutual moments so you never regret a missed spark.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Core Pillars: Why Aura Is Built Different -->
+  <section class="pillars-section" id="verification">
+    <div class="section-header-center">
+      <span class="section-eyebrow">THE AURA ADVANTAGE</span>
+      <h2 class="section-title">Finally, a Dating App That Respects Your Time.</h2>
+      <p class="section-desc">Designed to get you off the screen and across the table on unforgettable dates.</p>
+    </div>
+
+    <div class="pillars-grid">
+      <div class="pillar-card card-pink">
+        <div class="pillar-icon-box">🔐</div>
+        <h3 class="pillar-title">100% Catfish-Free (3D Liveness)</h3>
+        <p class="pillar-desc">
+          Every single profile must pass a real-time 3D biometric face scan. No bots, no fake accounts, no misleading old pictures. You meet who you see.
+        </p>
+      </div>
+
+      <div class="pillar-card card-purple">
+        <div class="pillar-icon-box">🎙️</div>
+        <h3 class="pillar-title">Voice Vibe & Chemistry</h3>
+        <p class="pillar-desc">
+          Text messages can feel robotic. Listen to someone's laugh, vocal cadence, and unscripted thoughts before you commit to a coffee date.
+        </p>
+      </div>
+
+      <div class="pillar-card card-amber">
+        <div class="pillar-icon-box">📍</div>
+        <h3 class="pillar-title">Real-World Proximity</h3>
+        <p class="pillar-desc">
+          Stop matching with people 40 miles away across traffic. Discover singles within walking distance who share your daily neighborhood rhythms.
+        </p>
+      </div>
+
+      <div class="pillar-card card-mint">
+        <div class="pillar-icon-box">✨</div>
+        <h3 class="pillar-title">AI Sparks Without Cliches</h3>
+        <p class="pillar-desc">
+          Break the ice naturally with personalized questions derived from mutual hobbies, travel bucket lists, and favorite late-night guilty pleasures.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Real Love Stories & Testimonials -->
+  <section class="stories-section" id="stories">
+    <div class="section-header-center">
+      <span class="section-eyebrow">PROOF OF SPARK</span>
+      <h2 class="section-title">Couples Who Found Their Rhythm.</h2>
+      <p class="section-desc">Real stories from people who deleted their other dating apps.</p>
+    </div>
+
+    <div class="stories-grid">
+      <div class="story-card">
+        <div class="quote-badge">“</div>
+        <p class="story-quote">
+          I was sitting at Subko Coffee reading when Aura pinged a Radar match 50 meters away. We smiled at each other across the room, sent a spark, and ended up talking until closing time. Seven months later, we're moving in together.
+        </p>
+        <div class="story-author">
+          <img src="./assets/images/avatar_1.jpg" class="author-avatar" alt="Rhea">
+          <div>
+            <div class="author-name">Rhea & Kabir</div>
+            <div class="author-location">Matched on Proximity Radar · Bandra</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="quote-badge">“</div>
+        <p class="story-quote">
+          The 3D verification is a lifesaver. On other apps, 4 out of 5 people looked nothing like their photos. On Aura, Maya walked in looking identical to her 3D verified badge. The conversation flowed effortlessly from minute one.
+        </p>
+        <div class="story-author">
+          <img src="./assets/images/avatar_2.jpg" class="author-avatar" alt="Dev">
+          <div>
+            <div class="author-name">Dev & Ananya</div>
+            <div class="author-location">Matched on Path-Crossing Echoes · Mumbai</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="story-card">
+        <div class="quote-badge">“</div>
+        <p class="story-quote">
+          Her Voice Note was what hooked me. Hearing her chuckle about her obsession with vintage cameras made her feel like a real human, not just an algorithm. Best date of my life.
+        </p>
+        <div class="story-author">
+          <img src="./assets/images/avatar_4.jpg" class="author-avatar" alt="Karan">
+          <div>
+            <div class="author-name">Karan & Tara</div>
+            <div class="author-location">Matched on Voice Vibe · Bangalore</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Final Colorful 3D Couple Download Banner -->
+  <section class="cta-banner-section" id="download">
+    <div class="cta-banner-box">
+      <img src="./assets/images/hero_couple_3d.jpg" alt="Joyful Couple in Cafe Street" class="cta-bg-image">
+      <div class="cta-banner-content">
+        <h2 class="cta-title">Ready for Sparks That Feel Real?</h2>
+        <p class="cta-desc">
+          Join thousands of singles discovering genuine chemistry nearby. Available now on Google Play and Apple App Store.
+        </p>
+
+        <div class="cta-action-row">
+          <a href="https://play.google.com/store/apps/details?id=com.nextgen.aura.dating" class="btn-download-store" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24">
+              <path d="M3.609 1.814L13.792 12 3.61 22.186c-.368-.328-.61-.852-.61-1.474V3.288c0-.622.242-1.146.61-1.474zM15.207 13.414l2.502 2.502-12.78 7.378 10.278-9.88zM4.929.706l12.78 7.378-2.502 2.502L4.93.706zM18.89 11.237l3.208 1.852c.84.485.84 1.275 0 1.76l-3.208 1.852-2.316-2.316 2.316-2.148z"/>
+            </svg>
+            <div>
+              <span class="btn-sub">GET IT ON</span>
+              <span class="btn-main">Google Play</span>
+            </div>
+          </a>
+
+          <a href="#download" class="btn-download-store">
+            <svg viewBox="0 0 24 24">
+              <path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M15.97 6.37c.63-.79 1.06-1.88.94-2.98-.93.04-2.07.63-2.73 1.4-.58.67-1.09 1.76-.95 2.84 1.05.08 2.11-.47 2.74-1.26"/>
+            </svg>
+            <div>
+              <span class="btn-sub">DOWNLOAD ON</span>
+              <span class="btn-main">App Store</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Comprehensive Footer (Clean & Bright) -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="/" class="brand-logo">
+          <img src="./assets/images/app_icon.png" alt="Aura Logo" class="brand-icon">
+          <span class="brand-name">Aura</span>
+        </a>
+        <p>
+          Next-generation dating with real-time Proximity Radar, 3D biometric verification, and Path-Crossing Echoes. Real chemistry in your orbit.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>EXPERIENCE</h4>
+        <ul class="footer-links">
+          <li><a href="#radar">Proximity Radar</a></li>
+          <li><a href="#echoes">Path-Crossing Echoes</a></li>
+          <li><a href="#verification">3D Face Verification</a></li>
+          <li><a href="#stories">Love Stories</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>PRIVACY & SAFETY</h4>
+        <ul class="footer-links">
+          <li><a href="/privacy">Privacy Policy</a></li>
+          <li><a href="/terms">Terms of Service</a></li>
+          <li><a href="/delete-account">Delete Account</a></li>
+          <li><a href="mailto:safety@findaura.co">Safety Center</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>CONNECT</h4>
+        <ul class="footer-links">
+          <li><a href="mailto:support@findaura.co">support@findaura.co</a></li>
+          <li><a href="https://instagram.com" target="_blank" rel="noopener">Instagram</a></li>
+          <li><a href="https://twitter.com" target="_blank" rel="noopener">Twitter / X</a></li>
+          <li><a href="https://tiktok.com" target="_blank" rel="noopener">TikTok</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>&copy; 2026 NextGen IT Global &middot; Aura Dating. All rights reserved.</div>
+      <div>Designed with passion for genuine connections.</div>
+    </div>
+  </footer>
+
+  <!-- Interactive Demo Logic for Live Phone Deck & Radar -->
+  <script>
+    // 3D Avatar Stylized Candidate Profiles Deck (Zero Real Photo Privacy Issues)
+    const candidates = [
+      {
+        name: 'Maya',
+        age: 24,
+        dist: '350m away · Central Park Cafe',
+        compat: '98% VIBE',
+        photo: './assets/images/avatar_1.jpg',
+        tags: ['☕ Matcha Latte', '📸 35mm Film', '✈️ Kyoto Soon'],
+        voiceNote: '0:14'
+      },
+      {
+        name: 'Aarav',
+        age: 26,
+        dist: '600m away · Rooftop Lounge',
+        compat: '95% VIBE',
+        photo: './assets/images/avatar_2.jpg',
+        tags: ['🎵 R&B & Indie', '🍷 Old Fashioned', '🏙️ City Skylines'],
+        voiceNote: '0:18'
+      },
+      {
+        name: 'Sofia',
+        age: 23,
+        dist: '1.2km away · Art District',
+        compat: '99% SPARK',
+        photo: './assets/images/avatar_3.jpg',
+        tags: ['🎨 Ceramics', '🥐 Sourdough Baking', '📚 Philosophy'],
+        voiceNote: '0:11'
+      },
+      {
+        name: 'Leo',
+        age: 25,
+        dist: '450m away · Co-working Loft',
+        compat: '94% VIBE',
+        photo: './assets/images/avatar_4.jpg',
+        tags: ['🎮 Indie Games', '☕ Espresso Double', '🐕 Golden Retriever'],
+        voiceNote: '0:16'
+      },
+      {
+        name: 'Chloe',
+        age: 26,
+        dist: '850m away · Beach Boardwalk',
+        compat: '97% SPARK',
+        photo: './assets/images/avatar_5.jpg',
+        tags: ['🌅 Sunset Chaser', '🍷 Natural Wines', '🎾 Pickleball'],
+        voiceNote: '0:15'
+      }
+    ];
+
+    let currentCandidateIndex = 0;
+
+    const cardEl = document.getElementById('activeDatingCard');
+    const cardImage = document.getElementById('cardImage');
+    const cardName = document.getElementById('cardName');
+    const cardAge = document.getElementById('cardAge');
+    const cardDistText = document.getElementById('cardDistText');
+    const cardCompatBadge = document.getElementById('cardCompatBadge');
+    const cardTags = document.getElementById('cardTags');
+    const toast = document.getElementById('sparkToast');
+    const phoneDistanceDisplay = document.getElementById('phoneDistanceDisplay');
+
+    function renderCandidate(c) {
+      cardImage.src = c.photo;
+      cardName.textContent = c.name;
+      cardAge.textContent = c.age;
+      cardDistText.textContent = c.dist;
+      cardCompatBadge.textContent = c.compat;
+      phoneDistanceDisplay.textContent = 'Radar: ' + c.dist.split('·')[0].trim();
+
+      // Clear & render tags
+      cardTags.innerHTML = '';
+      c.tags.forEach(tag => {
+        const span = document.createElement('span');
+        span.className = 'card-tag-pill';
+        span.textContent = tag;
+        cardTags.appendChild(span);
+      });
+    }
+
+    function triggerNextCard(isLike) {
+      if (isLike) {
+        cardEl.style.transform = 'translateX(120px) rotate(12deg)';
+        cardEl.style.opacity = '0';
+        toast.classList.add('active');
+        setTimeout(() => toast.classList.remove('active'), 1800);
+      } else {
+        cardEl.style.transform = 'translateX(-120px) rotate(-12deg)';
+        cardEl.style.opacity = '0';
+      }
+
+      setTimeout(() => {
+        currentCandidateIndex = (currentCandidateIndex + 1) % candidates.length;
+        renderCandidate(candidates[currentCandidateIndex]);
+        cardEl.style.transform = 'translateX(0) rotate(0deg)';
+        cardEl.style.opacity = '1';
+      }, 350);
+    }
+
+    // Bind Button Events
+    document.getElementById('btnLike').addEventListener('click', () => triggerNextCard(true));
+    document.getElementById('btnSuperlike').addEventListener('click', () => triggerNextCard(true));
+    document.getElementById('btnDislike').addEventListener('click', () => triggerNextCard(false));
+
+    // Radar Candidate Pin Click Handler
+    function highlightRadarCandidate(name, age, distance, bio, photo) {
+      const heading = document.getElementById('radarCandidateHeading');
+      const body = document.getElementById('radarCandidateBody');
+      const card = document.getElementById('radarCandidateCard');
+
+      heading.innerHTML = `✨ ${name}, ${age} &middot; <span style="color: #FF3366; font-size: 1rem;">${distance}</span>`;
+      body.innerHTML = `<strong>Bio & Vibe:</strong> ${bio}. Crossed paths nearby. Tap <em>Get Aura App</em> to initiate an instant proximity spark!`;
+      
+      card.style.borderColor = '#FF3366';
+      card.style.background = '#FFE4E6';
+      setTimeout(() => {
+        card.style.borderColor = '#FFE4E6';
+        card.style.background = '#FFF9F7';
+      }, 2500);
+    }
+
+    // Voice Note Play Audio Animation Toggle
+    const voiceBtn = document.getElementById('voicePlayBtn');
+    let isPlaying = false;
+    voiceBtn.addEventListener('click', () => {
+      isPlaying = !isPlaying;
+      voiceBtn.textContent = isPlaying ? '❚❚' : '▶';
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,20 @@
+# Aura Dating - System Architecture & Technical LLM Knowledge Graph
+
+> Aura is a privacy-first, next-generation dating and social discovery platform built on real-time spatial proximity radar, biometric 3D face liveness verification, and cryptographic quantum-resistant chat security. Compliant with India DPDP Act 2023 and Canada PIPEDA regulations.
+
+## Core Features & System Capabilities
+
+- **3D Face Liveness Verification**: Mandatory biometric proof-of-humanness onboarding utilizing ML face mesh and Euler head pose angle tracking (Yaw -25° to +25°, Pitch +15°). Prevents bot networks, synthetic AI deepfakes, and catfishing.
+- **Dynamic Spatial Radar Screen**: Real-time GPS-assisted proximity matching with customizable discovery radius (5 km - 100 km), debounced canvas ring scaling (400ms), and global location search powered by OpenStreetMap Nominatim. Confirmed connection nodes display only upon mutual handshake confirmation.
+- **Intuitive Dual-Section Match Filters**:
+  - *Member Preferences*: Age Range, Distance Radius, Seeking Demographics, Minimum Compatibility Threshold (50%-95%), and Verified Profiles Only toggle.
+  - *Lifestyle Habits*: Workout & Fitness, Social Drinking, Smoking Habits, Dietary Lifestyle, Pet Companions, and Daily Rhythm (Early Bird / Night Owl).
+- **Aura Vault Payment Gateway**: Multi-currency localized pricing across USD ($), CAD (CA$), EUR (€), GBP (£), INR (₹), and AUD (A$). Supports biometric one-tap authentication (AES-256 cryptogram tokenization) and PCI-DSS Level 1 card gateway with real-time Luhn validation.
+- **Daily Quotas & Smart Paywall**: Free tier members receive 5 path-crossing Echoes and 10 Radar Waves per 24-hour cycle. Limits automatically prompt the Aura Premium paywall sheet.
+- **Privacy & Regulatory Compliance**: 500m geohash obfuscation, automated 48-hour location history purge, hardware screenshot prevention, and end-to-end Signal Double-Ratchet AES-256-GCM encrypted ephemeral chat.
+
+## LLM Ingestion Endpoints
+
+- [Full Documentation](llms-full.txt): Comprehensive deep-dive on architecture, schemas, and security standards.
+- [AI Plugin Manifest](.well-known/ai-plugin.json): Machine-readable OpenAI & Gemini plugin specification.
+- [Robots Directives](robots.txt): Crawler and answer engine access permissions.

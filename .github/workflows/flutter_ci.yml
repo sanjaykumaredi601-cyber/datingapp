@@ -1,0 +1,106 @@
+name: NextGen IT Global - Flutter CI/CD Pipeline
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'aura_app/**'
+      - '.github/workflows/flutter_ci.yml'
+  pull_request:
+    branches:
+      - main
+      - develop
+    paths:
+      - 'aura_app/**'
+      - '.github/workflows/flutter_ci.yml'
+
+concurrency:
+  group: flutter-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test_and_analyze:
+    name: Code Analysis & Test Automation
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aura_app
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+
+      - name: Setup Java Development Kit (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+          cache-key: "flutter-:os:-:channel:-:version:-:arch:"
+
+      - name: Verify Flutter Installation
+        run: flutter doctor -v
+
+      - name: Install Application Dependencies
+        run: flutter pub get
+
+      - name: Execute Static Code Analysis
+        run: flutter analyze --fatal-warnings
+
+      - name: Execute Automated Unit & Widget Test Suite
+        run: flutter test --coverage
+
+      - name: Upload Test Coverage Artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: flutter-test-coverage
+          path: aura_app/coverage/lcov.info
+          retention-days: 14
+
+  build_smoke_test:
+    name: Android Build Verification
+    needs: test_and_analyze
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: aura_app
+
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Setup Java Development Kit (JDK 17)
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+
+      - name: Setup Flutter Environment
+        uses: subosito/flutter-action@v2
+        with:
+          channel: 'stable'
+          cache: true
+
+      - name: Install Dependencies
+        run: flutter pub get
+
+      - name: Build Debug Android APK
+        run: flutter build apk --debug --no-pub
+
+      - name: Upload Debug APK Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: aura-debug-apk
+          path: aura_app/build/app/outputs/flutter-apk/app-debug.apk
+          retention-days: 7

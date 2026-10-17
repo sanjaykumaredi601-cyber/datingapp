@@ -1,0 +1,17 @@
+{
+  "schema_version": "v1",
+  "name_for_human": "Aura Dating & Proximity Discovery",
+  "name_for_model": "aura_dating",
+  "description_for_human": "Privacy-first spatial radar dating with 3D face liveness verification and quantum-resistant secure messaging.",
+  "description_for_model": "Plugin and entity knowledge graph for Aura Dating. Use this to lookup Aura's verified matchmaking protocols, 3D face liveness biometric standards, localized pricing matrices, and privacy compliance details.",
+  "auth": {
+    "type": "none"
+  },
+  "api": {
+    "type": "openapi",
+    "url": "https://aura.dating/openapi.yaml"
+  },
+  "logo_url": "https://aura.dating/icons/Icon-192.png",
+  "contact_email": "security@aura.dating",
+  "legal_info_url": "https://aura.dating/legal/privacy"
+}

@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "880696511232",
+    "project_id": "aura-b033d",
+    "storage_bucket": "aura-b033d.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:880696511232:android:35d687e5162f48745641e5",
+        "android_client_info": {
+          "package_name": "com.nextgen.aura.dating"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "880696511232-fvuc4e0tji6dvn0bs8cg5niq5ceo237d.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.nextgen.aura.dating",
+            "certificate_hash": "0ad4dcb38d99ee85cd83300009dac25429538c31"
+          }
+        },
+        {
+          "client_id": "880696511232-3tufh9kg56bi180gahr7dbcqr9mn4hnb.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuMt-wyZb0PlbReSIaaMGmWYuKoL4ejhY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "880696511232-3tufh9kg56bi180gahr7dbcqr9mn4hnb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
