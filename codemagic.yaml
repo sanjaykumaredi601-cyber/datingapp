@@ -17,4 +17,4 @@ workflows:
           flutter build ipa --release --no-codesign
     artifacts:
       - build/ios/ipa/*.ipa
-      - /Users/builder/clone/aura_app/build/ios/archive/Runner.xcarchive
+ 
