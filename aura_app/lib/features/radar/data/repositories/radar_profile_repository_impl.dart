@@ -11,7 +11,103 @@ class RadarProfileRepositoryImpl implements RadarProfileRepository {
   final Map<String, RadarProfileDocument> _localProfileCache = {};
 
   RadarProfileRepositoryImpl({FirebaseFirestore? firestore})
-      : _firestore = firestore ?? _safeFirestore();
+      : _firestore = firestore ?? _safeFirestore() {
+    _initializeSeedProfiles();
+  }
+
+  void _initializeSeedProfiles() {
+    final seeds = [
+      RadarProfileDocument(
+        userId: 'cand_ananya_01',
+        displayName: 'Ananya Sharma',
+        age: 24,
+        birthDate: DateTime(2002, 4, 12),
+        gender: 'Woman',
+        interestedIn: 'Men',
+        latitude: 19.0596,
+        longitude: 72.8295,
+        photos: const [
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb',
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9',
+        ],
+        bio: 'Architect by day, vinyl collector by night.',
+        passions: const ['Architecture', 'Vinyl Records', 'Coffee'],
+        isVerified: true,
+      ),
+      RadarProfileDocument(
+        userId: 'cand_maya_02',
+        displayName: 'Maya Lin',
+        age: 26,
+        birthDate: DateTime(2000, 8, 21),
+        gender: 'Woman',
+        interestedIn: 'Everyone',
+        latitude: 19.0700,
+        longitude: 72.8400,
+        photos: const [
+          'https://images.unsplash.com/photo-1517841905240-472988babdf9',
+          'https://images.unsplash.com/photo-1524504388940-b1c1722653e1',
+        ],
+        bio: 'Film photographer & vintage cafe hopper.',
+        passions: const ['Photography', 'Film', 'Indie Music'],
+        isVerified: true,
+      ),
+      RadarProfileDocument(
+        userId: 'cand_rhea_03',
+        displayName: 'Rhea Kapoor',
+        age: 25,
+        birthDate: DateTime(2001, 11, 5),
+        gender: 'Woman',
+        interestedIn: 'Men',
+        latitude: 19.1000,
+        longitude: 72.8500,
+        photos: const [
+          'https://images.unsplash.com/photo-1524504388940-b1c1722653e1',
+          'https://images.unsplash.com/photo-1534528741775-53994a69daeb',
+        ],
+        bio: 'Curator & yoga enthusiast.',
+        passions: const ['Yoga', 'Art', 'Design'],
+        isVerified: true,
+      ),
+      RadarProfileDocument(
+        userId: 'cand_rohan_04',
+        displayName: 'Rohan Verma',
+        age: 27,
+        birthDate: DateTime(1999, 2, 14),
+        gender: 'Man',
+        interestedIn: 'Women',
+        latitude: 19.1200,
+        longitude: 72.8600,
+        photos: const [
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
+        ],
+        bio: 'Music producer & trekker.',
+        passions: const ['Music', 'Trekking', 'Cooking'],
+        isVerified: true,
+      ),
+      RadarProfileDocument(
+        userId: 'cand_lucas_05',
+        displayName: 'Lucas Vance',
+        age: 28,
+        birthDate: DateTime(1998, 6, 18),
+        gender: 'Man',
+        interestedIn: 'Women',
+        latitude: 19.1500,
+        longitude: 72.8800,
+        photos: const [
+          'https://images.unsplash.com/photo-1500648767791-00dcc994a43e',
+          'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d',
+        ],
+        bio: 'Sound designer & traveler.',
+        passions: const ['Sound Design', 'Travel', 'Surfing'],
+        isVerified: true,
+      ),
+    ];
+
+    for (final profile in seeds) {
+      _localProfileCache[profile.userId] = profile;
+    }
+  }
 
   static FirebaseFirestore? _safeFirestore() {
     try {
