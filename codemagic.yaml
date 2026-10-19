@@ -12,9 +12,8 @@ workflows:
       - name: Install CocoaPods
         script: |
           find . -name "Podfile" -execdir pod install \;
-      - name: Build ipa
+      - name: Build iOS
         script: |
-          flutter build ipa --release --no-codesign
+          flutter build ios --simulator
     artifacts:
-      - build/ios/ipa/*.ipa
- 
+      - build/ios/iphonesimulator/*.app
