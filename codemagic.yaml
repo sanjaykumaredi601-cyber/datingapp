@@ -1,6 +1,20 @@
 # Codemagic CI/CD configuration for Aura App
 workflows:
-  sample-workflow:
-    name: Codemagic Sample Workflow
-    max_build_duration: 120
+  ios-workflow:
+    name: iOS Workflow
+    max_build_duration: 60
     instance_type: mac_mini_m2
+    working_directory: aura_app
+    scripts:
+      - name: Install Flutter packages
+        script: |
+          flutter packages pub get
+      - name: Install CocoaPods
+        script: |
+          find . -name "Podfile" -execdir pod install \;
+      - name: Build ipa
+        script: |
+          flutter build ipa --release --no-codesign
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /Users/builder/clone/aura_app/build/ios/archive/Runner.xcarchive
