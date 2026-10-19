@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,45 +20,107 @@ import 'features/auth/presentation/screens/onboarding_profile_screen.dart';
 import 'features/auth/presentation/screens/dating_onboarding_flow_screen.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+void main() {
+  runZonedGuarded(() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    debugPrint('🚀 [STARTUP-0] Flutter Binding initialized successfully');
 
-  // Safe platform orientation handling (desktop doesn't support orientation locking)
-  try {
-    await SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown,
-    ]);
-  } catch (_) {}
+    // Catch framework-level rendering or layout errors
+    FlutterError.onError = (FlutterErrorDetails details) {
+      FlutterError.presentError(details);
+      debugPrint('🚨 [STARTUP-FLUTTER-ERROR] ${details.exceptionAsString()}');
+      if (details.stack != null) {
+        debugPrint('   Stack trace: ${details.stack}');
+      }
+    };
 
-  // Bright status bar + warm pearl navigation bar
-  try {
-    SystemChrome.setSystemUIOverlayStyle(
-      const SystemUiOverlayStyle(
-        statusBarColor: Colors.transparent,
-        statusBarIconBrightness: Brightness.dark,
-        systemNavigationBarColor: Color(0xFFFFF9F7),
-        systemNavigationBarIconBrightness: Brightness.dark,
-      ),
-    );
-  } catch (_) {}
+    // Catch asynchronous platform dispatcher errors (prevents sudden iOS simulator crashes)
+    PlatformDispatcher.instance.onError = (error, stack) {
+      debugPrint('🚨 [STARTUP-PLATFORM-ERROR] $error');
+      debugPrint('   Stack trace: $stack');
+      return true; // Handled, prevent app process abort
+    };
 
-  // Initialize Firebase across platforms
-  try {
-    await Firebase.initializeApp(
-      options: DefaultFirebaseOptions.currentPlatform,
-    );
-  } catch (e) {
-    debugPrint('ℹ️ Firebase initialization notice: $e');
-  }
+    // Safe platform orientation handling
+    try {
+      debugPrint('📱 [STARTUP-1] Setting preferred orientations...');
+      await SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+      debugPrint('📱 [STARTUP-1] Preferred orientations configured.');
+    } catch (e) {
+      debugPrint('⚠️ [STARTUP-1] Orientation setting warning (non-fatal): $e');
+    }
 
-  // Setup dependency injection
-  await di.configureDependencies();
+    // Bright status bar + warm pearl navigation bar
+    try {
+      debugPrint('🎨 [STARTUP-2] Applying System UI Overlay Style...');
+      SystemChrome.setSystemUIOverlayStyle(
+        const SystemUiOverlayStyle(
+          statusBarColor: Colors.transparent,
+          statusBarIconBrightness: Brightness.dark,
+          systemNavigationBarColor: Color(0xFFFFF9F7),
+          systemNavigationBarIconBrightness: Brightness.dark,
+        ),
+      );
+      debugPrint('🎨 [STARTUP-2] System UI style applied.');
+    } catch (e) {
+      debugPrint('⚠️ [STARTUP-2] System UI styling warning: $e');
+    }
 
-  // Initialize global Firebase Auth state listener
-  GoogleAuthService().initializeAuthListener();
+    // Initialize Firebase across platforms with dual native/options strategy
+    debugPrint('🔥 [STARTUP-3] Initializing Firebase for platform: ${defaultTargetPlatform.name} (web: $kIsWeb)...');
+    try {
+      if (defaultTargetPlatform == TargetPlatform.iOS) {
+        // On iOS, attempt native initialization from GoogleService-Info.plist first
+        try {
+          await Firebase.initializeApp();
+          debugPrint('🔥 [STARTUP-3] Firebase initialized natively from GoogleService-Info.plist');
+        } catch (plistErr) {
+          debugPrint('ℹ️ [STARTUP-3] Native plist init note ($plistErr), trying DefaultFirebaseOptions...');
+          await Firebase.initializeApp(
+            options: DefaultFirebaseOptions.currentPlatform,
+          );
+          debugPrint('🔥 [STARTUP-3] Firebase initialized with DefaultFirebaseOptions');
+        }
+      } else {
+        await Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform,
+        );
+        debugPrint('🔥 [STARTUP-3] Firebase initialized with DefaultFirebaseOptions');
+      }
+      debugPrint('🔥 [STARTUP-3] Active Firebase apps: ${Firebase.apps.map((a) => a.name).toList()}');
+    } catch (e, stack) {
+      debugPrint('⚠️ [STARTUP-3] Firebase initialization caught error (running in resilient mode): $e');
+      debugPrint('   Stack: $stack');
+    }
 
-  runApp(const AuraApp());
+    // Setup dependency injection
+    debugPrint('💉 [STARTUP-4] Configuring GetIt dependency injection container...');
+    try {
+      await di.configureDependencies();
+      debugPrint('💉 [STARTUP-4] Dependency injection configured successfully.');
+    } catch (e, stack) {
+      debugPrint('❌ [STARTUP-4] DI configuration error: $e');
+      debugPrint('   DI stack: $stack');
+    }
+
+    // Initialize global Firebase Auth state listener
+    debugPrint('🔐 [STARTUP-5] Initializing global Auth listeners...');
+    try {
+      GoogleAuthService().initializeAuthListener();
+      debugPrint('🔐 [STARTUP-5] Global Auth listener initialized.');
+    } catch (e) {
+      debugPrint('⚠️ [STARTUP-5] Auth listener registration notice: $e');
+    }
+
+    debugPrint('✨ [STARTUP-6] Executing runApp(const AuraApp())...');
+    runApp(const AuraApp());
+  }, (error, stackTrace) {
+    debugPrint('💥 [UNCAUGHT-ZONE-ERROR] Unhandled exception in root zone: $error');
+    debugPrint('   Stack trace: $stackTrace');
+  });
 }
 
 class AuraApp extends StatelessWidget {
@@ -79,11 +143,26 @@ class AuthGate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('🚪 [AuthGate] Building AuthGate. Firebase apps initialized: ${Firebase.apps.isNotEmpty}');
+
+    // If Firebase failed to initialize, route safely to WelcomeScreen
+    if (Firebase.apps.isEmpty) {
+      debugPrint('🚪 [AuthGate] No Firebase apps found. Falling back directly to WelcomeScreen.');
+      return const WelcomeScreen();
+    }
+
     try {
       final auth = FirebaseAuth.instance;
       return StreamBuilder<User?>(
         stream: auth.authStateChanges(),
         builder: (context, snapshot) {
+          debugPrint('🚪 [AuthGate] authStateChanges snapshot state: ${snapshot.connectionState}, hasData: ${snapshot.hasData}, hasError: ${snapshot.hasError}');
+
+          if (snapshot.hasError) {
+            debugPrint('⚠️ [AuthGate] Auth stream error: ${snapshot.error}. Presenting WelcomeScreen fallback.');
+            return const WelcomeScreen();
+          }
+
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Scaffold(
               backgroundColor: AppColors.background,
@@ -97,15 +176,17 @@ class AuthGate extends StatelessWidget {
 
           final User? user = snapshot.data;
           if (user != null) {
+            debugPrint('🚪 [AuthGate] Active session found for UID: ${user.uid}. Proceeding to _UserGate.');
             return _UserGate(key: ValueKey(user.uid), user: user);
           } else {
-            debugPrint('[AuthGate] No active Firebase session. Presenting WelcomeScreen.');
+            debugPrint('🚪 [AuthGate] No active Firebase session. Presenting WelcomeScreen.');
             return const WelcomeScreen();
           }
         },
       );
-    } catch (e) {
-      debugPrint('[AuthGate] Firebase Auth unavailable ($e). Falling back to WelcomeScreen.');
+    } catch (e, stack) {
+      debugPrint('❌ [AuthGate] Exception during AuthGate build: $e');
+      debugPrint('   Stack trace: $stack');
       return const WelcomeScreen();
     }
   }
@@ -130,15 +211,29 @@ class _UserGateState extends State<_UserGate> {
   }
 
   Future<bool> _resolveProfileStatus() async {
+    debugPrint('🔍 [_UserGate] Checking profile completion for UID: ${widget.user.uid}...');
     try {
       // 1. Instant check from local secure storage for zero latency startup
-      final localComplete = await _storage.read(key: 'is_profile_complete');
+      final localComplete = await _storage.read(key: 'is_profile_complete').timeout(
+        const Duration(seconds: 2),
+        onTimeout: () => null,
+      );
       if (localComplete == 'true') {
+        debugPrint('🔍 [_UserGate] Local profile status is complete.');
         return true;
       }
       // 2. Single-document read from Firestore with timeout
-      return await UserProvisioningService().checkUserExists(widget.user.uid);
-    } catch (_) {
+      final exists = await UserProvisioningService().checkUserExists(widget.user.uid).timeout(
+        const Duration(seconds: 4),
+        onTimeout: () {
+          debugPrint('⏱️ [_UserGate] Firestore check timed out, defaulting to resilient fallback.');
+          return true;
+        },
+      );
+      debugPrint('🔍 [_UserGate] Firestore check returned exists: $exists');
+      return exists;
+    } catch (e) {
+      debugPrint('⚠️ [_UserGate] Profile status check error: $e. Falling back gracefully.');
       return true; // Resilient fallback for network timeouts
     }
   }

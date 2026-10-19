@@ -1,4 +1,4 @@
-// File generated for Aura Firebase configuration across Android, Web, and Desktop.
+// File generated for Aura Firebase configuration across Android, iOS, Web, and Desktop.
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
     show defaultTargetPlatform, kIsWeb, TargetPlatform;
@@ -11,11 +11,13 @@ class DefaultFirebaseOptions {
     switch (defaultTargetPlatform) {
       case TargetPlatform.android:
         return android;
+      case TargetPlatform.iOS:
+        return ios;
+      case TargetPlatform.macOS:
+        return ios;
       case TargetPlatform.windows:
         return windows;
       case TargetPlatform.linux:
-      case TargetPlatform.macOS:
-      case TargetPlatform.iOS:
       default:
         return android;
     }
@@ -37,6 +39,15 @@ class DefaultFirebaseOptions {
     messagingSenderId: '880696511232',
     projectId: 'aura-b033d',
     storageBucket: 'aura-b033d.firebasestorage.app',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyCuMt-wyZb0PlbReSIaaMGmWYuKoL4ejhY',
+    appId: '1:880696511232:ios:d4b1a8f9c2e0b5a1',
+    messagingSenderId: '880696511232',
+    projectId: 'aura-b033d',
+    storageBucket: 'aura-b033d.firebasestorage.app',
+    iosBundleId: 'com.aura.dating.auraApp',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
