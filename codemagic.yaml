@@ -14,7 +14,7 @@ workflows:
           find . -name "Podfile" -execdir pod install \;
       - name: Build ipa
         script: |
-          flutter build ipa --release --no-codesign
+          flutter build ipa --release
     artifacts:
       - build/ios/ipa/*.ipa
  
