@@ -135,6 +135,10 @@ void main() {
       await tester.tap(find.text('Gaming'));
       await tester.pumpAndSettle();
 
+      // Scroll down to icebreaker prompts
+      await tester.drag(find.byType(SingleChildScrollView), const Offset(0, -350));
+      await tester.pumpAndSettle();
+
       // Verify Icebreaker prompt questions
       expect(find.text('ICEBREAKER PROMPT 1'), findsOneWidget);
       expect(find.text('A fun fact about me...'), findsOneWidget);
@@ -362,15 +366,21 @@ void main() {
 
       final Map<String, dynamic> written = captured.first as Map<String, dynamic>;
       expect(written['uid'], equals('usr_test_verification_42'));
+      expect(written['userId'], equals('usr_test_verification_42'));
       expect(written['displayName'], equals('Alex River'));
+      expect(written['name'], equals('Alex River'));
       expect(written['age'], equals(25));
       expect(written['gender'], equals('Man'));
       expect(written['relationshipGoal'], equals('Casual dating'));
       expect(written['hobbies'], containsAll(['Fitness', 'Music', 'Gaming']));
       expect(written['prompts']['A fun fact about me...'], equals('I build AI dating apps and play cello.'));
       expect(written['photoUrls'].length, equals(2));
+      expect(written['photos'].length, equals(2));
       expect(written['introMediaUrl'], equals('https://aura.dating/intro/alex_voice.m4a'));
+      expect(written['voiceNoteUrl'], equals('https://aura.dating/intro/alex_voice.m4a'));
       expect(written['isProfileCompleted'], isTrue);
+      expect(written['createdAt'], isNotNull);
+      expect(written['updatedAt'], isNotNull);
     });
   });
 }

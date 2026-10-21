@@ -1,0 +1,49 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+
+    function isAuthenticated() {
+      return request.auth != null && request.auth.uid != null;
+    }
+
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // VOICE NOTES & AUDIO PROMPTS
+    // Path: users/{userId}/voice_prompts/{fileName}
+    // Only authenticated users can read (for match playback); only the owner can write.
+    // ─────────────────────────────────────────────────────────
+    match /users/{userId}/voice_prompts/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // INTRO MEDIA (AUDIO / VIDEO)
+    // Path: users/{userId}/intro/{fileName}
+    // Only writable by the owner.
+    // ─────────────────────────────────────────────────────────
+    match /users/{userId}/intro/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    // ─────────────────────────────────────────────────────────
+    // PROFILE PHOTOS
+    // Path: users/{userId}/photos/{fileName}
+    // Only writable by the owner.
+    // ─────────────────────────────────────────────────────────
+    match /users/{userId}/photos/{fileName} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+
+    // General user directory catch-all: writable only by the owner
+    match /users/{userId}/{allPaths=**} {
+      allow read: if isAuthenticated();
+      allow write: if isOwner(userId);
+    }
+  }
+}

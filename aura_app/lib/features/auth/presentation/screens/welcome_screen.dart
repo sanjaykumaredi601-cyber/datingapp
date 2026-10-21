@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:math' as math;
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -1529,19 +1530,124 @@ class _WelcomeScreenState extends State<WelcomeScreen>
 
                 const SizedBox(height: 10),
 
-                // Disclaimer Text
-                const Text(
-                  '18+ Only · DPDP & PIPEDA Encrypted · Zero Screenshot Guarantee',
+                // Terms of Service & Privacy Policy Acceptance Disclaimer Text
+                RichText(
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: AppColors.textTertiary,
-                    fontSize: 9.5,
-                    fontWeight: FontWeight.w500,
-                    letterSpacing: 0.3,
+                  text: TextSpan(
+                    style: const TextStyle(
+                      color: AppColors.textTertiary,
+                      fontSize: 10.0,
+                      fontWeight: FontWeight.w400,
+                      height: 1.35,
+                    ),
+                    children: [
+                      const TextSpan(text: 'By continuing, you agree to our '),
+                      TextSpan(
+                        text: 'Terms of Service',
+                        style: const TextStyle(
+                          color: AppColors.sunsetCoral,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = () => _showPolicyModal(context, isPrivacy: false),
+                      ),
+                      const TextSpan(text: ' & '),
+                      TextSpan(
+                        text: 'Privacy Policy',
+                        style: const TextStyle(
+                          color: AppColors.sunsetCoral,
+                          fontWeight: FontWeight.w600,
+                          decoration: TextDecoration.underline,
+                        ),
+                        recognizer: TapGestureRecognizer()..onTap = () => _showPolicyModal(context, isPrivacy: true),
+                      ),
+                      const TextSpan(text: '.\n18+ Only · DPDP & PIPEDA Encrypted · Zero Screenshot Guarantee'),
+                    ],
                   ),
                 ),
               ],
             ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  void _showPolicyModal(BuildContext context, {required bool isPrivacy}) {
+    HapticFeedback.lightImpact();
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: const Color(0xFF0F1522),
+      isScrollControlled: true,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (ctx) => DraggableScrollableSheet(
+        initialChildSize: 0.65,
+        minChildSize: 0.4,
+        maxChildSize: 0.9,
+        expand: false,
+        builder: (_, scrollController) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Center(
+                child: Container(
+                  width: 38,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.white24,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    isPrivacy ? 'Privacy Policy' : 'Terms of Service',
+                    style: const TextStyle(
+                      color: AppColors.textPrimary,
+                      fontFamily: 'SpaceGrotesk',
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.close_rounded, color: AppColors.textSecondary, size: 20),
+                    onPressed: () => Navigator.pop(ctx),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 12),
+              Expanded(
+                child: ListView(
+                  controller: scrollController,
+                  children: [
+                    Text(
+                      isPrivacy
+                          ? 'Aura ("we", "our") respects your privacy. We prioritize zero screenshot leaks, strict ephemeral location hashing, and biometric-grade identity protection.\n\n'
+                              '1. Data Collection: We only collect your phone number or Google ID, profile photos, voice prompts, and coarse location for matchmaking.\n\n'
+                              '2. Audio & Media Security: Voice notes are encrypted in transit and stored safely in Firebase Storage. Audio is only accessible to authenticated prospective matches.\n\n'
+                              '3. Proximity Hashing: Exact GPS coordinates are never exposed; we obfuscate to 500m geohash cells to protect your physical safety.\n\n'
+                              '4. Your Rights: You can request complete deletion of your account and media at any time.'
+                          : 'Welcome to Aura. By accessing our platform, you agree to comply with our community safety guidelines.\n\n'
+                              '1. Eligibility: You must be at least 18 years of age to register and participate.\n\n'
+                              '2. Safe Conduct: Harassment, hate speech, non-consensual media sharing, and impersonation are strictly forbidden.\n\n'
+                              '3. Privacy Guarantee: You agree not to attempt recording, capturing, or leaking other members\' private voice vibe notes or messages.\n\n'
+                              '4. Account Termination: Aura reserves the right to suspend accounts that violate safety rules.',
+                      style: const TextStyle(
+                        color: AppColors.textSecondary,
+                        fontSize: 13.5,
+                        height: 1.5,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
           ),
         ),
       ),

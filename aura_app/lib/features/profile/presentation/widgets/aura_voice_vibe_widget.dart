@@ -3,6 +3,8 @@ import 'dart:async';
 import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:audioplayers/audioplayers.dart';
+import '../../../../core/services/voice_note_service.dart';
 
 /// 30-Second Audio Voice Bio / Prompt Component ("Aura Voice Vibe")
 /// Features a luxury frosted glass audio pill with dancing neon waveform bars
@@ -29,6 +31,7 @@ class AuraVoiceVibeWidget extends StatefulWidget {
 
 class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
     with SingleTickerProviderStateMixin {
+  final VoiceNoteService _voiceService = VoiceNoteService();
   late AnimationController _waveController;
   late String _selectedPrompt;
 
@@ -37,6 +40,8 @@ class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
   bool _hasRecording = false;
   int _recordSeconds = 0;
   Timer? _recordTimer;
+  String? _currentAudioPath;
+  StreamSubscription<PlayerState>? _playerSub;
 
   static const List<String> availablePrompts = [
     'My idea of an ideal spontaneous evening...',
@@ -50,6 +55,7 @@ class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
   void initState() {
     super.initState();
     _selectedPrompt = widget.initialPrompt;
+    _currentAudioPath = widget.initialAudioUrl;
     _hasRecording = widget.initialAudioUrl != null;
 
     _waveController = AnimationController(
@@ -58,34 +64,58 @@ class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
     )..addListener(() {
         if (_isPlaying || _isRecording) setState(() {});
       });
+
+    _playerSub = _voiceService.onPlayerStateChanged.listen((state) {
+      if (!mounted) return;
+      setState(() {
+        _isPlaying = state == PlayerState.playing;
+        if (_isPlaying) {
+          if (!_waveController.isAnimating) _waveController.repeat(reverse: true);
+        } else {
+          _waveController.stop();
+        }
+      });
+    });
   }
 
   @override
   void dispose() {
     _recordTimer?.cancel();
+    _playerSub?.cancel();
+    _voiceService.stopAudio();
     _waveController.dispose();
     super.dispose();
   }
 
-  void _togglePlayback() {
+  Future<void> _togglePlayback() async {
     HapticFeedback.selectionClick();
-    setState(() {
-      _isPlaying = !_isPlaying;
-      if (_isPlaying) {
-        _waveController.repeat(reverse: true);
-        // Auto-stop after 15 seconds if demo playback
-        Timer(const Duration(seconds: 15), () {
-          if (mounted && _isPlaying) {
-            setState(() {
-              _isPlaying = false;
-              _waveController.stop();
-            });
-          }
+    if (_isPlaying) {
+      await _voiceService.pauseAudio();
+      if (mounted) {
+        setState(() {
+          _isPlaying = false;
+          _waveController.stop();
         });
-      } else {
-        _waveController.stop();
       }
-    });
+    } else {
+      final audioTarget = _currentAudioPath ?? widget.initialAudioUrl ?? '/users/current/voice_prompt.m4a';
+      setState(() {
+        _isPlaying = true;
+        _waveController.repeat(reverse: true);
+      });
+
+      await _voiceService.playAudio(audioTarget);
+
+      // Auto-stop preview fallback after 15 seconds if demo playback
+      Timer(const Duration(seconds: 15), () {
+        if (mounted && _isPlaying) {
+          setState(() {
+            _isPlaying = false;
+            _waveController.stop();
+          });
+        }
+      });
+    }
   }
 
   Future<void> _startRecording() async {
@@ -114,6 +144,12 @@ class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
       _waveController.repeat(reverse: true);
     });
 
+    try {
+      await _voiceService.startRecording();
+    } catch (e) {
+      debugPrint('[AuraVoiceVibeWidget] Start recording error: $e');
+    }
+
     _recordTimer?.cancel();
     _recordTimer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (_recordSeconds >= 30) {
@@ -124,28 +160,43 @@ class _AuraVoiceVibeWidgetState extends State<AuraVoiceVibeWidget>
     });
   }
 
-  void _stopRecording() {
+  Future<void> _stopRecording() async {
     _recordTimer?.cancel();
     HapticFeedback.mediumImpact();
+
+    String? path;
+    try {
+      path = await _voiceService.stopRecording();
+    } catch (e) {
+      debugPrint('[AuraVoiceVibeWidget] Stop recording error: $e');
+    }
+
+    final savedPath = (path != null && path.isNotEmpty)
+        ? path
+        : '/users/current/voice_prompt.m4a';
+
     setState(() {
       _isRecording = false;
       _hasRecording = true;
+      _currentAudioPath = savedPath;
       _waveController.stop();
     });
 
     if (widget.onSaved != null) {
-      widget.onSaved!('/users/current/voice_prompt.m4a', _selectedPrompt);
+      widget.onSaved!(savedPath, _selectedPrompt);
     }
     if (widget.onRecordingCompleted != null) {
-      widget.onRecordingCompleted!(_selectedPrompt, '/users/current/voice_prompt.m4a');
+      widget.onRecordingCompleted!(_selectedPrompt, savedPath);
     }
   }
 
-  void _deleteRecording() {
+  Future<void> _deleteRecording() async {
     HapticFeedback.lightImpact();
+    await _voiceService.stopAudio();
     setState(() {
       _hasRecording = false;
       _isPlaying = false;
+      _currentAudioPath = null;
       _waveController.stop();
       _recordSeconds = 0;
     });

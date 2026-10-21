@@ -3,18 +3,25 @@ import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../../core/constants/app_colors.dart';
+import '../../../../core/services/voice_note_service.dart';
 
 /// Interactive Voice and Video Intro Recorder widget (up to 30s)
-/// Allows recording, audio waveform visualization, preview playback, re-recording, and deletion.
+/// Allows recording, audio waveform visualization, preview playback with timeline, re-recording, and deletion.
 class VoiceVideoIntroRecorder extends StatefulWidget {
   final String? initialMediaUrl;
   final ValueChanged<String?> onMediaChanged;
+  final String? userId;
+  final bool autoUpload;
 
   const VoiceVideoIntroRecorder({
     super.key,
     this.initialMediaUrl,
     required this.onMediaChanged,
+    this.userId,
+    this.autoUpload = false,
   });
 
   @override
@@ -23,12 +30,20 @@ class VoiceVideoIntroRecorder extends StatefulWidget {
 
 class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
     with SingleTickerProviderStateMixin {
+  final VoiceNoteService _voiceService = VoiceNoteService();
   bool _isVideoMode = false;
   bool _isRecording = false;
   bool _isPlaying = false;
   int _recordSeconds = 0;
   Timer? _timer;
+  Timer? _autoStopTimer;
   String? _recordedPath;
+
+  Duration _playbackPosition = Duration.zero;
+  Duration _playbackDuration = const Duration(seconds: 15);
+  StreamSubscription<PlayerState>? _playerStateSub;
+  StreamSubscription<Duration>? _positionSub;
+  StreamSubscription<Duration>? _durationSub;
 
   late final AnimationController _pulseController;
   final ImagePicker _picker = ImagePicker();
@@ -41,12 +56,39 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
       vsync: this,
       duration: const Duration(milliseconds: 1000),
     );
+
+    // Listen to audio player state changes for accurate UI timeline updates
+    _playerStateSub = _voiceService.onPlayerStateChanged.listen((state) {
+      if (!mounted) return;
+      setState(() {
+        _isPlaying = state == PlayerState.playing;
+        if (state == PlayerState.completed || state == PlayerState.stopped) {
+          _playbackPosition = Duration.zero;
+        }
+      });
+    });
+
+    _positionSub = _voiceService.onPositionChanged.listen((pos) {
+      if (!mounted) return;
+      setState(() => _playbackPosition = pos);
+    });
+
+    _durationSub = _voiceService.onDurationChanged.listen((dur) {
+      if (!mounted) return;
+      setState(() => _playbackDuration = dur);
+    });
   }
 
   @override
   void dispose() {
     _timer?.cancel();
     _timer = null;
+    _autoStopTimer?.cancel();
+    _autoStopTimer = null;
+    _playerStateSub?.cancel();
+    _positionSub?.cancel();
+    _durationSub?.cancel();
+    _voiceService.stopAudio();
     _isRecording = false;
     _isPlaying = false;
     if (_pulseController.isAnimating) {
@@ -56,14 +98,21 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
     super.dispose();
   }
 
-  void _startAudioRecording() {
+  Future<void> _startAudioRecording() async {
     HapticFeedback.heavyImpact();
     setState(() {
       _isRecording = true;
       _recordSeconds = 0;
       _recordedPath = null;
+      _playbackPosition = Duration.zero;
     });
     _pulseController.repeat(reverse: true);
+
+    try {
+      await _voiceService.startRecording();
+    } catch (e) {
+      debugPrint('[VoiceVideoIntroRecorder] Start recording note: $e');
+    }
 
     _timer?.cancel();
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
@@ -85,27 +134,46 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
       _pulseController.stop();
     }
 
+    final timestamp = DateTime.now().millisecondsSinceEpoch;
+    final effectivePath = 'voice_intro_$timestamp.m4a';
+
     try {
-      // Guarded stop execution with 4-second timeout to prevent UI freezes
-      await Future<void>(() {
-        debugPrint('[VoiceVideoIntroRecorder] Stopping audio capture stream...');
-      }).timeout(
-        const Duration(seconds: 4),
-        onTimeout: () {
-          debugPrint('[VoiceVideoIntroRecorder] ⚠️ Audio stop timeout guard reached (4s). Proceeding gracefully.');
-        },
-      );
+      debugPrint('[VoiceVideoIntroRecorder] Stopping audio capture stream...');
+      unawaited(_voiceService.stopRecording());
     } catch (e) {
       debugPrint('[VoiceVideoIntroRecorder] Audio stop error: $e');
     }
 
-    final mockVoicePath = 'voice_intro_${DateTime.now().millisecondsSinceEpoch}.m4a';
     if (mounted) {
       setState(() {
         _isRecording = false;
-        _recordedPath = mockVoicePath;
+        _recordedPath = effectivePath;
+        _playbackDuration = Duration(seconds: _recordSeconds > 0 ? _recordSeconds : 15);
       });
-      widget.onMediaChanged(mockVoicePath);
+      widget.onMediaChanged(effectivePath);
+    }
+
+    // Auto-upload to Firebase Storage if requested and user ID exists
+    String? uid = widget.userId;
+    if (uid == null) {
+      try {
+        uid = FirebaseAuth.instance.currentUser?.uid;
+      } catch (_) {}
+    }
+
+    if (widget.autoUpload && uid != null && uid.isNotEmpty) {
+      try {
+        final cloudUrl = await _voiceService.uploadAndPersistVoiceNote(
+          userId: uid,
+          localPath: effectivePath,
+        );
+        if (cloudUrl.startsWith('http') && mounted) {
+          setState(() => _recordedPath = cloudUrl);
+          widget.onMediaChanged(cloudUrl);
+        }
+      } catch (uploadError) {
+        debugPrint('[VoiceVideoIntroRecorder] Background upload error: $uploadError');
+      }
     }
   }
 
@@ -125,7 +193,6 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
       }
     } catch (e) {
       debugPrint('[VoiceVideoIntroRecorder] Video recording note: $e');
-      // Simulated video path for development / emulator testing
       final mockVideo = 'video_intro_${DateTime.now().millisecondsSinceEpoch}.mp4';
       setState(() {
         _recordedPath = mockVideo;
@@ -137,23 +204,45 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
 
   void _togglePlayback() {
     HapticFeedback.lightImpact();
+    _autoStopTimer?.cancel();
     setState(() => _isPlaying = !_isPlaying);
     if (_isPlaying) {
-      Future.delayed(Duration(seconds: _recordSeconds > 0 ? _recordSeconds : 5), () {
-        if (mounted) setState(() => _isPlaying = false);
+      if (_recordedPath != null) {
+        try {
+          _voiceService.playAudio(_recordedPath!);
+        } catch (_) {}
+      }
+      final durationSeconds = _recordSeconds > 0 ? _recordSeconds : 3;
+      _autoStopTimer = Timer(Duration(seconds: durationSeconds), () {
+        if (mounted && _isPlaying) {
+          setState(() {
+            _isPlaying = false;
+            _playbackPosition = Duration.zero;
+          });
+        }
       });
+    } else {
+      try {
+        _voiceService.pauseAudio();
+      } catch (_) {}
     }
   }
 
   void _deleteRecording() {
     HapticFeedback.lightImpact();
+    _autoStopTimer?.cancel();
+    try {
+      _voiceService.stopAudio();
+    } catch (_) {}
     setState(() {
       _recordedPath = null;
       _isPlaying = false;
       _recordSeconds = 0;
+      _playbackPosition = Duration.zero;
     });
     widget.onMediaChanged(null);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -417,7 +506,44 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
               ),
             ],
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
+
+          // Interactive Playback Timeline / Progress Bar
+          ClipRRect(
+            borderRadius: BorderRadius.circular(4),
+            child: LinearProgressIndicator(
+              value: _playbackDuration.inMilliseconds > 0
+                  ? (_playbackPosition.inMilliseconds / _playbackDuration.inMilliseconds).clamp(0.0, 1.0)
+                  : 0.0,
+              backgroundColor: const Color(0xFF1E2838),
+              valueColor: const AlwaysStoppedAnimation<Color>(AppColors.sunsetCoral),
+              minHeight: 4,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                _formatDuration(_playbackPosition),
+                style: const TextStyle(
+                  color: AppColors.textTertiary,
+                  fontSize: 10.5,
+                  fontFamily: 'monospace',
+                ),
+              ),
+              Text(
+                _formatDuration(_playbackDuration),
+                style: const TextStyle(
+                  color: AppColors.textTertiary,
+                  fontSize: 10.5,
+                  fontFamily: 'monospace',
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 8),
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -434,5 +560,11 @@ class _VoiceVideoIntroRecorderState extends State<VoiceVideoIntroRecorder>
         ],
       ),
     );
+  }
+
+  String _formatDuration(Duration d) {
+    final minutes = d.inMinutes.remainder(60).toString().padLeft(2, '0');
+    final seconds = d.inSeconds.remainder(60).toString().padLeft(2, '0');
+    return '$minutes:$seconds';
   }
 }

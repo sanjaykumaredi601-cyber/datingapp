@@ -93,6 +93,8 @@ class UserProvisioningService {
     dynamic prompts,
     List<String>? photoUrls,
     String? introMediaUrl,
+    String? voiceNoteUrl,
+    String? bio,
     dynamic location,
   }) async {
     try {
@@ -136,25 +138,41 @@ class UserProvisioningService {
           ? photoUrls.first
           : (customPhotoUrl ?? user.photoURL ?? '');
 
+      final effectiveVoiceUrl = (voiceNoteUrl != null && voiceNoteUrl.isNotEmpty)
+          ? voiceNoteUrl
+          : (introMediaUrl ?? '');
+
       final newUserData = <String, dynamic>{
         'uid': user.uid,
         'userId': user.uid,
+        'name': trimmedName,
         'displayName': trimmedName,
         'email': user.email ?? '',
         'photoUrl': effectivePhotoUrl,
-        if (photoUrls != null && photoUrls.isNotEmpty) 'photoUrls': photoUrls,
+        if (photoUrls != null && photoUrls.isNotEmpty) ...{
+          'photoUrls': photoUrls,
+          'photos': photoUrls,
+        },
         if (age != null) 'age': age,
-        if (birthDate != null) 'birthDate': Timestamp.fromDate(birthDate),
+        if (birthDate != null) ...{
+          'birthDate': Timestamp.fromDate(birthDate),
+          'birthdate': Timestamp.fromDate(birthDate),
+        },
         if (gender != null) 'gender': gender,
         if (interestedIn != null) 'interestedIn': interestedIn,
         if (relationshipGoal != null) 'relationshipGoal': relationshipGoal,
         if (hobbies != null) 'hobbies': hobbies,
         if (prompts != null) 'prompts': prompts,
-        if (introMediaUrl != null && introMediaUrl.isNotEmpty) 'introMediaUrl': introMediaUrl,
+        'bio': bio ?? '',
+        if (effectiveVoiceUrl.isNotEmpty) ...{
+          'voiceNoteUrl': effectiveVoiceUrl,
+          'introMediaUrl': effectiveVoiceUrl,
+        },
         if (location != null) 'location': location,
         'isProfileCompleted': true,
         'isProfileComplete': true,
         'createdAt': now,
+        'updatedAt': now,
         'lastLoginAt': now,
         'lastActiveAt': now,
         'authProvider': user.providerData.isNotEmpty

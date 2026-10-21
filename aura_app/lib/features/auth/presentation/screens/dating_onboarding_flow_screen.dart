@@ -48,7 +48,14 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
   bool _isSubmitting = false;
   String? _stepErrorMessage;
 
-  User? get _resolvedUser => widget.user ?? FirebaseAuth.instance.currentUser;
+  User? get _resolvedUser {
+    if (widget.user != null) return widget.user;
+    try {
+      return FirebaseAuth.instance.currentUser;
+    } catch (_) {
+      return null;
+    }
+  }
 
   // ── Step 1: Core Identity & Demographics ──
   late final TextEditingController _nameController;
@@ -185,12 +192,15 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
 
   // ── Step 4: Voice/Video Intro Recorder ──
   String? _introMediaUrl;
+  late TextEditingController _bioController;
+  bool _acceptedTerms = true;
 
   @override
   void initState() {
     super.initState();
     final initialName = _resolvedUser?.displayName ?? widget.fallbackDisplayName ?? '';
     _nameController = TextEditingController(text: initialName);
+    _bioController = TextEditingController();
 
     // Default birthdate (24 years old)
     final now = DateTime.now();
@@ -208,6 +218,7 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
   void dispose() {
     _pageController.dispose();
     _nameController.dispose();
+    _bioController.dispose();
     _promptAnswerController1.dispose();
     _promptAnswerController2.dispose();
     super.dispose();
@@ -271,6 +282,10 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
       }
       if (_calculatedAge == null || _calculatedAge! < 18) {
         setState(() => _stepErrorMessage = 'You must be at least 18 years old to join Aura.');
+        return false;
+      }
+      if (!_acceptedTerms) {
+        setState(() => _stepErrorMessage = 'Please accept the Terms of Service & Privacy Policy to continue.');
         return false;
       }
       return true;
@@ -426,8 +441,8 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
 
         uploadedPhotoUrls = await Future.wait(uploadFutures);
 
-        // 2. Audio Intro: Store local path and proceed IMMEDIATELY to avoid freezing!
-        // Audio upload runs asynchronously in background to Firebase Storage.
+        // 2. Audio Intro / Voice Note: Upload to users/{userId}/voice_prompts/voice_note.m4a
+        // Audio upload runs in background to Firebase Storage and syncs voiceNoteUrl.
         if (_introMediaUrl != null && _introMediaUrl!.isNotEmpty) {
           uploadedIntroUrl = _introMediaUrl;
           final localAudio = _introMediaUrl!;
@@ -437,17 +452,26 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
           if (!localAudio.startsWith('http')) {
             unawaited(Future(() async {
               try {
-                final cloudUrl = await _mediaStorageService.uploadUserIntroMedia(
-                  uid: uid,
-                  localPath: localAudio,
-                  isVideo: isVid,
-                );
+                final cloudUrl = isVid
+                    ? await _mediaStorageService.uploadUserIntroMedia(
+                        uid: uid,
+                        localPath: localAudio,
+                        isVideo: true,
+                      )
+                    : await _mediaStorageService.uploadVoiceNote(
+                        uid: uid,
+                        localPath: localAudio,
+                      );
                 if (cloudUrl.startsWith('http')) {
                   await FirebaseFirestore.instance
                       .collection('users')
                       .doc(uid)
-                      .set({'introMediaUrl': cloudUrl}, SetOptions(merge: true));
-                  debugPrint('[DatingOnboarding] ✅ Background audio intro uploaded: $cloudUrl');
+                      .set({
+                        'voiceNoteUrl': cloudUrl,
+                        'introMediaUrl': cloudUrl,
+                        'updatedAt': FieldValue.serverTimestamp(),
+                      }, SetOptions(merge: true));
+                  debugPrint('[DatingOnboarding] ✅ Background audio voice note uploaded & persisted: $cloudUrl');
                 }
               } catch (e) {
                 debugPrint('[DatingOnboarding] Background audio upload note: $e');
@@ -484,6 +508,8 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
           prompts: promptsMap,
           photoUrls: uploadedPhotoUrls,
           introMediaUrl: uploadedIntroUrl,
+          voiceNoteUrl: uploadedIntroUrl,
+          bio: _bioController.text.trim(),
           location: const GeoPoint(43.6532, -79.3832), // Toronto hub default
         ).timeout(const Duration(seconds: 15), onTimeout: () => true);
 
@@ -886,6 +912,61 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
               );
             }).toList(),
           ),
+          const SizedBox(height: 20),
+
+          // 6. Short Bio
+          _buildFieldHeader('SHORT BIO / ABOUT ME'),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: _bioController,
+            maxLines: 2,
+            style: const TextStyle(color: AppColors.textPrimary, fontSize: 14),
+            decoration: _inputDecoration('A short line about your energy, interests, or vibe...', Icons.edit_note_rounded),
+          ),
+          const SizedBox(height: 20),
+
+          // 7. Privacy Policy & Terms Acceptance Checkbox
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+            decoration: BoxDecoration(
+              color: AppColors.surfaceL1,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: _acceptedTerms ? AppColors.sunsetCoral.withValues(alpha: 0.3) : const Color(0xFF1E2838),
+                width: 1.2,
+              ),
+            ),
+            child: Row(
+              children: [
+                Checkbox(
+                  value: _acceptedTerms,
+                  activeColor: AppColors.sunsetCoral,
+                  checkColor: Colors.white,
+                  onChanged: (val) => setState(() => _acceptedTerms = val ?? true),
+                ),
+                Expanded(
+                  child: RichText(
+                    text: const TextSpan(
+                      style: TextStyle(color: AppColors.textSecondary, fontSize: 12, height: 1.3),
+                      children: [
+                        TextSpan(text: 'I am 18+ and accept the '),
+                        TextSpan(
+                          text: 'Terms of Service',
+                          style: TextStyle(color: AppColors.sunsetCoral, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: ' & '),
+                        TextSpan(
+                          text: 'Privacy Policy',
+                          style: TextStyle(color: AppColors.sunsetCoral, fontWeight: FontWeight.bold),
+                        ),
+                        TextSpan(text: '.'),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -1209,7 +1290,7 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
           const SizedBox(height: 24),
 
           // ── 3. Creative Icebreaker Prompts ──
-          _buildFieldHeader('PROFILE PROMPT (OPTIONAL)'),
+          _buildFieldHeader('ICEBREAKER PROMPT 1'),
           const SizedBox(height: 8),
           _buildPromptCard(
             question: _promptQuestion1,
@@ -1218,7 +1299,7 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
           ),
           const SizedBox(height: 16),
 
-          _buildFieldHeader('ADDITIONAL PROMPT (OPTIONAL)'),
+          _buildFieldHeader('ICEBREAKER PROMPT 2'),
           const SizedBox(height: 8),
           _buildPromptCard(
             question: _promptQuestion2,
