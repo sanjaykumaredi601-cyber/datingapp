@@ -24,6 +24,8 @@ class AppColors {
   static const Color frostedBorder     = Color(0xFFFFE4E6); // Delicate Warm Rose Border
 
   // ── Brand Accents (Vibrant Warm Dating) ─────────────────
+  static const Color findAuraSkyBlue   = Color(0xFF7FA6C4); // FindAura Signature Sky-Blue (#7FA6C4)
+  static const Color splashBackground  = Color(0xFF7FA6C4); // Solid Sky-Blue Splash Background
   static const Color sunsetCoral       = Color(0xFFFF3366); // Sunset Coral (#FF3366)
   static const Color sunsetPeach       = Color(0xFFFF6B6B); // Sunset Peach (#FF6B6B)
   static const Color primary           = Color(0xFFFF3366); // Main Brand Accent

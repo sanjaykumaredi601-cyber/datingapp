@@ -686,7 +686,7 @@ class _SettingsPrivacyScreenState extends State<SettingsPrivacyScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Manage Aura Subscription',
+                            'Manage FindAura Subscription',
                             style: TextStyle(
                               color: Color(0xFFF8FAFC),
                               fontWeight: FontWeight.bold,
@@ -956,7 +956,7 @@ class _SettingsPrivacyScreenState extends State<SettingsPrivacyScreen> {
               child: Column(
                 children: const [
                   Text(
-                    'Aura v1.0.0 (Production Build)',
+                    'FindAura v1.0.0 (Production Build)',
                     style: TextStyle(color: AppColors.textTertiary, fontSize: 12),
                   ),
                   SizedBox(height: 4),

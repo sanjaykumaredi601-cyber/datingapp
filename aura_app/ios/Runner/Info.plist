@@ -7,7 +7,7 @@
 		<key>CFBundleDevelopmentRegion</key>
 		<string>$(DEVELOPMENT_LANGUAGE)</string>
 		<key>CFBundleDisplayName</key>
-		<string>Aura App</string>
+		<string>FindAura</string>
 		<key>CFBundleExecutable</key>
 		<string>$(EXECUTABLE_NAME)</string>
 		<key>CFBundleIdentifier</key>
@@ -28,21 +28,21 @@
 		<true/>
 		<!-- User-Facing Permission Descriptions for App Store & TestFlight Compliance -->
 		<key>NSCameraUsageDescription</key>
-		<string>Aura uses your camera to take profile photos with filters, verify your identity with a selfie, and for video calls.</string>
+		<string>FindAura uses your camera to take profile photos with filters, verify your identity with a selfie, and for video calls.</string>
 		<key>NSMicrophoneUsageDescription</key>
-		<string>Aura uses your microphone to record your voice intro, send voice messages, and for audio/video calls.</string>
+		<string>FindAura uses your microphone to record your voice intro, send voice messages, and for audio/video calls.</string>
 		<key>NSLocationWhenInUseUsageDescription</key>
-		<string>Aura uses your location while the app is open to show nearby people on the radar and in Discover.</string>
+		<string>FindAura uses your location while the app is open to show nearby people on the radar and in Discover.</string>
 		<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
-		<string>Aura uses your location to discover matches nearby and update your radar proximity.</string>
+		<string>FindAura uses your location to discover matches nearby and update your radar proximity.</string>
 		<key>NSLocationAlwaysUsageDescription</key>
-		<string>Aura requires location access to find matches close to you.</string>
+		<string>FindAura requires location access to find matches close to you.</string>
 		<key>NSFaceIDUsageDescription</key>
-		<string>Aura uses Face ID to securely unlock your hidden vault conversations.</string>
+		<string>FindAura uses Face ID to securely unlock your hidden vault conversations.</string>
 		<key>NSPhotoLibraryUsageDescription</key>
-		<string>Aura needs access to your photo library so you can choose pictures for your dating profile.</string>
+		<string>FindAura needs access to your photo library so you can choose pictures for your dating profile.</string>
 		<key>NSPhotoLibraryAddUsageDescription</key>
-		<string>Aura saves photos you capture with filters to your photo library only when you choose to.</string>
+		<string>FindAura saves photos you capture with filters to your photo library only when you choose to.</string>
 		<!-- Background Modes for APNs Push Notifications -->
 		<key>UIBackgroundModes</key>
 		<array>

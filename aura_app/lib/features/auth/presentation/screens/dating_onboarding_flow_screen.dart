@@ -281,7 +281,7 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
         return false;
       }
       if (_calculatedAge == null || _calculatedAge! < 18) {
-        setState(() => _stepErrorMessage = 'You must be at least 18 years old to join Aura.');
+        setState(() => _stepErrorMessage = 'You must be at least 18 years old to join FindAura.');
         return false;
       }
       if (!_acceptedTerms) {
@@ -528,7 +528,7 @@ class _DatingOnboardingFlowScreenState extends State<DatingOnboardingFlowScreen>
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('✨ Welcome to Aura, $customName! Your profile is active.'),
+          content: Text('✨ Welcome to FindAura, $customName! Your profile is active.'),
           backgroundColor: const Color(0xFF10B981),
           behavior: SnackBarBehavior.floating,
         ),

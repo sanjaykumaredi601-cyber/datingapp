@@ -84,7 +84,7 @@ class _SubscriptionPaywallSheetState extends State<SubscriptionPaywallSheet> {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Entitlement Unlocked: Aura $tierTitle Activated!',
+                    'Entitlement Unlocked: FindAura $tierTitle Activated!',
                     style: const TextStyle(fontWeight: FontWeight.bold),
                   ),
                 ),

@@ -1326,11 +1326,11 @@ class _WelcomeScreenState extends State<WelcomeScreen>
               end: Alignment.bottomRight,
             ).createShader(bounds),
             child: const Text(
-              'Aura',
+              'FindAura',
               style: TextStyle(
-                fontSize: 42,
+                fontSize: 38,
                 fontWeight: FontWeight.w800,
-                letterSpacing: 10.0,
+                letterSpacing: 4.0,
                 color: Colors.white,
                 shadows: [
                   Shadow(
@@ -1628,16 +1628,16 @@ class _WelcomeScreenState extends State<WelcomeScreen>
                   children: [
                     Text(
                       isPrivacy
-                          ? 'Aura ("we", "our") respects your privacy. We prioritize zero screenshot leaks, strict ephemeral location hashing, and biometric-grade identity protection.\n\n'
+                          ? 'FindAura ("we", "our") respects your privacy. We prioritize zero screenshot leaks, strict ephemeral location hashing, and biometric-grade identity protection.\n\n'
                               '1. Data Collection: We only collect your phone number or Google ID, profile photos, voice prompts, and coarse location for matchmaking.\n\n'
                               '2. Audio & Media Security: Voice notes are encrypted in transit and stored safely in Firebase Storage. Audio is only accessible to authenticated prospective matches.\n\n'
                               '3. Proximity Hashing: Exact GPS coordinates are never exposed; we obfuscate to 500m geohash cells to protect your physical safety.\n\n'
                               '4. Your Rights: You can request complete deletion of your account and media at any time.'
-                          : 'Welcome to Aura. By accessing our platform, you agree to comply with our community safety guidelines.\n\n'
+                          : 'Welcome to FindAura. By accessing our platform, you agree to comply with our community safety guidelines.\n\n'
                               '1. Eligibility: You must be at least 18 years of age to register and participate.\n\n'
                               '2. Safe Conduct: Harassment, hate speech, non-consensual media sharing, and impersonation are strictly forbidden.\n\n'
                               '3. Privacy Guarantee: You agree not to attempt recording, capturing, or leaking other members\' private voice vibe notes or messages.\n\n'
-                              '4. Account Termination: Aura reserves the right to suspend accounts that violate safety rules.',
+                              '4. Account Termination: FindAura reserves the right to suspend accounts that violate safety rules.',
                       style: const TextStyle(
                         color: AppColors.textSecondary,
                         fontSize: 13.5,

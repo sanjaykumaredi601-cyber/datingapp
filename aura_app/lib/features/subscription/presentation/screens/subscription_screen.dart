@@ -344,7 +344,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
           onPressed: () => Navigator.maybePop(context),
         ),
         title: const Text(
-          'Aura Premium',
+          'FindAura Premium',
           style: TextStyle(
             color: AppColors.textPrimary,
             fontWeight: FontWeight.bold,
@@ -384,7 +384,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                 const SizedBox(height: 16),
                 const Center(
                   child: Text(
-                    'Elevate Your Aura',
+                    'Elevate Your FindAura',
                     style: TextStyle(
                       color: AppColors.textPrimary,
                       fontSize: 24,
@@ -717,7 +717,7 @@ class _SubscriptionScreenState extends State<SubscriptionScreen>
                     CircularProgressIndicator(color: Color(0xFFFF4D67)),
                     SizedBox(height: 20),
                     Text(
-                      'Activating Aura Premium Entitlement...',
+                      'Activating FindAura Premium Entitlement...',
                       style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
                     ),
                   ],
@@ -1075,7 +1075,7 @@ class _AuraVaultGatewaySheetState extends State<_AuraVaultGatewaySheet>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Text(
-                          'Aura Vault Payment Gateway',
+                          'FindAura Vault Payment Gateway',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,

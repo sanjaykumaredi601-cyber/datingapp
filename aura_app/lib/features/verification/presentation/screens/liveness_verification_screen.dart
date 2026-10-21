@@ -377,7 +377,7 @@ class _LivenessVerificationScreenState extends State<LivenessVerificationScreen>
                       }
                     },
                     child: Text(
-                      widget.isMandatoryOnboarding ? 'Enter Aura Radar ✨' : 'Complete & Return',
+                      widget.isMandatoryOnboarding ? 'Enter FindAura Radar ✨' : 'Complete & Return',
                       style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
                     ),
                   ),
@@ -936,7 +936,7 @@ class _LivenessVerificationScreenState extends State<LivenessVerificationScreen>
                 ),
                 const SizedBox(height: 6),
                 const Text(
-                  'Aura uses 3D Face Liveness to protect our community from bots, catfishes, and duplicate profiles.',
+                  'FindAura uses 3D Face Liveness to protect our community from bots, catfishes, and duplicate profiles.',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 13,

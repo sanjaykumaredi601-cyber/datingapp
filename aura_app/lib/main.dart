@@ -18,6 +18,8 @@ import 'core/services/user_provisioning_service.dart';
 import 'features/auth/presentation/screens/welcome_screen.dart';
 import 'features/auth/presentation/screens/onboarding_profile_screen.dart';
 import 'features/auth/presentation/screens/dating_onboarding_flow_screen.dart';
+import 'features/splash/presentation/screens/splash_screen.dart';
+import 'core/constants/app_constants.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
 void main() {
@@ -123,16 +125,18 @@ void main() {
   });
 }
 
+typedef FindAuraApp = AuraApp;
+
 class AuraApp extends StatelessWidget {
   const AuraApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Aura',
+      title: AppConstants.appName,
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const AuthGate(),
+      home: const SplashScreen(),
     );
   }
 }

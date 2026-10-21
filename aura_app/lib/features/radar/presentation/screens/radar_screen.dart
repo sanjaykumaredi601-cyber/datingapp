@@ -1790,7 +1790,7 @@ class _RadarScreenState extends State<RadarScreen>
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 4),
                   child: Text(
-                    searchController.text.trim().isEmpty ? 'Popular Global Aura Hubs' : 'Search Results (${suggestions.length})',
+                    searchController.text.trim().isEmpty ? 'Popular Global FindAura Hubs' : 'Search Results (${suggestions.length})',
                     style: const TextStyle(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
@@ -2958,7 +2958,7 @@ class _RadarScreenState extends State<RadarScreen>
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Aura Radar Boost (30m)',
+                          'FindAura Radar Boost (30m)',
                           style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700, color: RadarColors.darkForest),
                         ),
                         SizedBox(height: 2),
@@ -2976,7 +2976,7 @@ class _RadarScreenState extends State<RadarScreen>
                         setModalState(() => _isBoostActive = val);
                         setState(() => _isBoostActive = val);
                         _showFeedbackToast(
-                          val ? '⚡ Aura Radar Boost Activated (30m)!' : 'Aura Boost paused',
+                          val ? '⚡ FindAura Radar Boost Activated (30m)!' : 'FindAura Boost paused',
                           icon: Icons.auto_awesome_rounded,
                         );
                       },
@@ -3285,7 +3285,7 @@ class _RadarScreenState extends State<RadarScreen>
             ),
             const SizedBox(height: 12),
             const Text(
-              'Aura connects you with verified singles in your exact vicinity. Turn on device location permissions to begin discovering nearby profiles and dynamic vibe beacons.',
+              'FindAura connects you with verified singles in your exact vicinity. Turn on device location permissions to begin discovering nearby profiles and dynamic vibe beacons.',
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: RadarColors.titaniumGray,
